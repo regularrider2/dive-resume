@@ -215,9 +215,9 @@ function drawSharkBubble(ctx, x, y, p) {
   ctx.fillText(text, x, by + bh / 2);
 }
 
-function drawBoatBubble(ctx, x, y, p) {
+function drawBoatBubble(ctx, x, y, p, moveHint) {
   const line1 = 'Dive! Dive! Dive!';
-  const line2 = 'Use arrow keys to move';
+  const line2 = moveHint ?? 'Use arrow keys to move';
   const fontSize = Math.max(14, p * 6.5);
   const subFontSize = Math.max(10, p * 4.8);
   const lineGap = 6;
@@ -665,11 +665,12 @@ export default function GameCanvas({
 
     updateCreatures(creaturesRef.current, dt, WORLD_WIDTH);
 
-    // On mobile: zoom in slightly (smaller viewport in world units) so it doesn't feel zoomed out; desktop unchanged
+    // On mobile: narrower horizontal viewport (zoom) + shorter vertical viewport so less "all navy" and items stay in frame
     const isMobile = w < 768 || (typeof window !== 'undefined' && isTouchDevice());
     const viewportWidthWorld = isMobile ? WORLD_WIDTH * 0.38 : WORLD_WIDTH;
     const scale = w / viewportWidthWorld;
-    const viewHeightWorld = h / scale;
+    let viewHeightWorld = h / scale;
+    if (isMobile) viewHeightWorld *= 0.62;
 
     const camera = updateCamera(cameraRef.current, state.playerX, state.playerY, viewportWidthWorld, viewHeightWorld);
     if (isMobile) camera.x = (WORLD_WIDTH - viewportWidthWorld) / 2;
@@ -732,9 +733,10 @@ export default function GameCanvas({
       const bubbleWorldX = boatWorldX + s * 1.5 + s * 0.9;
       const bubbleWorldY = surfaceStart - s * 0.5 - s * 1.85;
       if (bubbleWorldY >= visibleTop && bubbleWorldY <= visibleBottom) {
+        const moveHint = (typeof window !== 'undefined' && isTouchDevice()) ? 'Use the joystick (bottom left) to move' : 'Use arrow keys to move';
         ctx.save();
         ctx.globalAlpha = alpha;
-        drawBoatBubble(ctx, bubbleWorldX, bubbleWorldY, p);
+        drawBoatBubble(ctx, bubbleWorldX, bubbleWorldY, p, moveHint);
         ctx.restore();
       }
     }
@@ -938,12 +940,15 @@ export default function GameCanvas({
             }
           }
         } else {
-          // Normal exploration idle nudges
+          // Normal exploration idle nudges (touch: joystick hint; desktop: arrow keys)
+          const isTouchDev = typeof window !== 'undefined' && isTouchDevice();
+          const moveNudge = isTouchDev ? '🤿 Use the joystick (bottom left) to move around!' : '🤿 Use arrow keys to move around!';
+          const moveSub = isTouchDev ? 'Use the joystick (bottom left) to move' : 'Use arrow keys to move';
           const IDLE_NUDGES = [
             '🤿 Anything else down here?',
             '🤿 Might wanna swim around...',
             '🤿 Explore! There\'s more to find.',
-            '🤿 Use arrow keys to move around!',
+            moveNudge,
           ];
           if (idleTimerRef.current > IDLE_DELAY_MS) {
             const cyclePos = (idleTimerRef.current - IDLE_DELAY_MS) % cycleMs;
@@ -953,7 +958,7 @@ export default function GameCanvas({
               const fadeOut = Math.min(1, (IDLE_SHOW_MS - cyclePos) / 400);
               ctx.save();
               ctx.globalAlpha = Math.min(fadeIn, fadeOut);
-              drawLabelBubble(ctx, state.playerX, bubbleY, IDLE_NUDGES[nudgeIdx], p, 'Use arrow keys to move');
+              drawLabelBubble(ctx, state.playerX, bubbleY, IDLE_NUDGES[nudgeIdx], p, moveSub);
               ctx.restore();
             }
           }

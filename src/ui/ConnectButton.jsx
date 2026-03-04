@@ -19,9 +19,9 @@ function useIsMobile() {
 export default function ConnectButton({ onCtaClick, onConnectOpened }) {
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
-  // Mobile: below discover/lobster counters (left side). Desktop: top-right.
+  // Mobile: below discover/lobster counters, left-aligned with HUD (8px). Desktop: top-right.
   const containerStyle = isMobile
-    ? { position: 'fixed', top: 78, left: 12, zIndex: 900, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }
+    ? { position: 'fixed', top: 78, left: 8, zIndex: 900, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }
     : { position: 'fixed', top: 10, right: 12, zIndex: 900, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 };
 
   return (
