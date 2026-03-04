@@ -22,6 +22,7 @@ import PhotoCarousel from './ui/PhotoCarousel.jsx';
 import VirtualJoystick from './ui/VirtualJoystick.jsx';
 import InteractButton from './ui/InteractButton.jsx';
 import ConnectButton from './ui/ConnectButton.jsx';
+import { Analytics } from '@vercel/analytics/react';
 import { touchState } from './engine/touchInput.js';
 
 const WORLD_HEIGHT = theme.world?.height ?? 2400;
@@ -456,6 +457,7 @@ export default function App() {
 
   return (
     <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'relative' }}>
+      <Analytics />
       <GameCanvas
         gameState={state}
         onDiscover={handleDiscover}
