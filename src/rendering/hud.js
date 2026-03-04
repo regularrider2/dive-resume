@@ -89,7 +89,7 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   // Pill dimensions — height grows with expandT
   const collapsedH = zoneFontSize + (isMobile ? 10 : 16);
   const expandedH  = collapsedH + (flavorFontSize + (isMobile ? 6 : 10)) * (flavor ? 1 : 0);
-  const pillH = collapsedH + (expandedH - collapsedH) * expandT;
+  const zonePillH = collapsedH + (expandedH - collapsedH) * expandT;
 
   // Slide: pill slides to targetY. Mobile: top-right, compact.
   const targetY = 10;
@@ -110,7 +110,7 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
     ctx.shadowBlur = 18;
     ctx.fillStyle = 'rgba(10,60,120,0.01)';
     ctx.beginPath();
-    ctx.roundRect(pillX - 4, pillY - 4, pillW + 8, pillH + 8, 10);
+    ctx.roundRect(pillX - 4, pillY - 4, pillW + 8, zonePillH + 8, 10);
     ctx.fill();
     ctx.restore();
   }
@@ -118,7 +118,7 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   // Pill background
   ctx.fillStyle = expandT > 0.05 ? 'rgba(0,18,48,0.90)' : 'rgba(0,0,0,0.60)';
   ctx.beginPath();
-  ctx.roundRect(pillX, pillY, pillW, pillH, 8);
+  ctx.roundRect(pillX, pillY, pillW, zonePillH, 8);
   ctx.fill();
 
   // Glowing border during announcement
@@ -126,7 +126,7 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
     ctx.strokeStyle = `rgba(56,189,248,${0.55 * expandT})`;
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.roundRect(pillX, pillY, pillW, pillH, 8);
+    ctx.roundRect(pillX, pillY, pillW, zonePillH, 8);
     ctx.stroke();
   }
 

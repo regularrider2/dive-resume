@@ -326,7 +326,7 @@ function drawLabelBubble(ctx, x, y, text, p, subtext) {
 }
 
 const ITEM_LABELS = {
-  'bottle':         { emoji: '📜', text: 'Why Hire Me' },
+  'bottle':         { emoji: '📜', text: 'About Me' },
   'echo-show':      { emoji: '📺', text: 'Alexa Smart Home Growth' },
   'ring-doorbell':  { emoji: '📷', text: 'Alexa Cameras' },
   'blueprint':      { emoji: '🏠', text: 'Alexa Map View' },

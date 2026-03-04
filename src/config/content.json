@@ -34,8 +34,8 @@
       "x": 0.5,
       "y": 170,
       "zone": "surface",
-      "title": "Why Hire Me",
-      "content": "To whoever found this —\n\nI'm David. Technical product manager and SSI-certified scuba diver. I've spent seven years at Amazon across product management, growth, and partnerships, most recently building AI features for Alexa that ship to tens of millions of customers. I'm looking for my next opportunity to build AI-powered products at scale.\n\nThere's more scattered across the ocean floor. Swim over the glowing items to learn about my career, and if you find the lobster, bring it back to the boat.\n\n— David",
+      "title": "About Me",
+      "content": "To whoever found this —\n\nI'm David. Technical product manager and SSI-certified scuba diver. I've spent seven years at Amazon across product management, growth, and partnerships, most recently building AI features for Alexa that ship to tens of millions of customers.\n\nThere's more scattered across the ocean floor. Swim over the glowing items to learn about my career, and if you find the lobster, bring it back to the boat.\n\n— David",
       "iconType": "bottle",
       "enabled": true
     },

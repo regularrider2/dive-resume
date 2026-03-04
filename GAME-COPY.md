@@ -63,14 +63,14 @@ This is the full text shown in the dialog when the player opens each discoverabl
 
 ---
 
-### Treasure: Message in a Bottle (Why Hire Me)  
-**id:** `why-hire-me` · **Dialog title:** Why Hire Me  
+### Treasure: Message in a Bottle (About Me)  
+**id:** `why-hire-me` · **Dialog title:** About Me  
 
 **Content (body):**
 ```
 To whoever found this —
 
-I'm David. Technical product manager and SSI-certified scuba diver. I've spent seven years at Amazon across product management, growth, and partnerships, most recently building AI features for Alexa that ship to tens of millions of customers. I'm looking for my next opportunity to build AI-powered products at scale.
+I'm David. Technical product manager and SSI-certified scuba diver. I've spent seven years at Amazon across product management, growth, and partnerships, most recently building AI features for Alexa that ship to tens of millions of customers.
 
 There's more scattered across the ocean floor. Swim over the glowing items to learn about my career, and if you find the lobster, bring it back to the boat.
 
@@ -209,7 +209,7 @@ You found my camera. I'm an award-winning wildlife and nature photographer. Here
 
 | id | title |
 |----|--------|
-| why-hire-me | Why Hire Me |
+| why-hire-me | About Me |
 | alexa-cameras | Alexa Smart Home Cameras |
 | map-view | Alexa Map View |
 | growth-strategy | Alexa Smart Home Growth |
@@ -224,7 +224,7 @@ You found my camera. I'm an award-winning wildlife and nature photographer. Here
 
 | Location | Context | Text |
 |----------|---------|------|
-| `GameCanvas.jsx` → ITEM_LABELS | bottle | 🔵 Why Hire Me |
+| `GameCanvas.jsx` → ITEM_LABELS | bottle | 🔵 About Me |
 | | ring-doorbell | 📷 Alexa Cameras |
 | | blueprint | 🏠 Alexa Map View |
 | | echo-show | 📺 Alexa Smart Home Growth |

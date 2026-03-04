@@ -680,7 +680,7 @@ Include:
 - A short bio (2–3 sentences)
 - Each job: company, role, years, what you built, and the impact
 - Skills and strengths
-- What kind of role you're looking for
+- Optional: career focus or interests (no job-seeking language; if asked about current employment, he is still at Amazon)
 - Any fun facts or talking points you want to highlight
 
 ---
@@ -803,7 +803,7 @@ Open `src/screens/NPCChatOverlay.jsx` and edit the `SUGGESTED_QUESTIONS` array a
 const SUGGESTED_QUESTIONS = [
   "What's David's background?",
   "What did he build at Amazon?",
-  "What kind of role is he looking for?",
+  "Does he still work at Amazon?",
   "What are his strongest skills?",
 ];
 ```

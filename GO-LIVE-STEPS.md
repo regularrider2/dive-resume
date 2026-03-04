@@ -232,7 +232,7 @@ The Ghost Diver is the NPC in The Reef that answers hiring managers’ questions
 ### Step 6.1 — Fill in your knowledge file — ~15–20 min
 
 1. Open **`src/data/david-knowledge.md`** in your editor.
-2. Replace the placeholder sections with your real content: bio, roles, **descriptions of your work** (projects, features, impact), skills, what you’re looking for, fun facts. Use as much detail as you want — the Ghost Diver will use only this file and won’t invent details.
+2. Replace the placeholder sections with your real content: bio, roles, **descriptions of your work** (projects, features, impact), skills, fun facts. Do not add job-seeking language; if asked about current employment, the Ghost Diver will say he is still at Amazon. Use as much detail as you want — the Ghost Diver will use only this file and won’t invent details.
 3. Save the file.
 
 - [ ] Done
