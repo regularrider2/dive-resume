@@ -164,8 +164,8 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   const tickerW = Math.max(10, p * 6);
   const tickerH = Math.round(viewportHeight * 0.6);
   const tickerTop = Math.round((viewportHeight - tickerH) / 2);
-  const labelGap = isMobile ? 44 : 60; // leave room for depth label + zone pill on narrow screens
-  const tickerX = viewportWidth - tickerW - labelGap;
+  const tickerRightGap = isMobile ? 44 : 60; // leave room for depth label + zone pill on narrow screens
+  const tickerX = viewportWidth - tickerW - tickerRightGap;
 
   // Background panel
   ctx.fillStyle = 'rgba(0,0,0,0.5)';
