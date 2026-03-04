@@ -394,8 +394,9 @@ function drawCameraSprite(ctx, x, y, glowPhase, p) {
 }
 
 // NPC Diver — fixed position in The Reef zone
-const NPC_DIVER_X = Math.round((theme.world?.width ?? 800) * 0.28);
-const NPC_DIVER_Y = Math.round((57 / 130) * (theme.world?.height ?? 2000)); // 57 ft depth
+const NPC_DIVER_X_DESKTOP = Math.round((theme.world?.width ?? 800) * 0.28);
+const NPC_DIVER_X_MOBILE = Math.round((theme.world?.width ?? 800) * 0.38);
+const NPC_DIVER_Y = Math.round((59 / 130) * (theme.world?.height ?? 2000)); // 59 ft depth
 
 const NPC_QUIPS = [
   '👻 I know his whole career. Ask me anything.',
@@ -451,6 +452,7 @@ export default function GameCanvas({
     const h = canvas.height;
     const p = getPixelSize();
     const isMobile = w < 768 || (typeof window !== 'undefined' && isTouchDevice());
+    const NPC_DIVER_X = isMobile ? NPC_DIVER_X_MOBILE : NPC_DIVER_X_DESKTOP;
     // On mobile: remap item x into center band (within visible viewport)
     const mobileClusterX = (worldX) => WORLD_WIDTH * 0.25 + (worldX / WORLD_WIDTH) * (WORLD_WIDTH * 0.5);
     const mobilePlayerMinX = WORLD_WIDTH * 0.2;
