@@ -2,13 +2,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import { askNPCDiver } from '../engine/npcChat.js';
 
 const SUGGESTED_QUESTIONS = [
-  "What did he actually build at Amazon?",
-  "What's his strongest technical skill?",
-  "What kind of role is he looking for?",
-  "What's unusual about his background?",
+  "What did he build at Amazon?",
+  "What photography award did he win?",
 ];
 
 const BROKE_JOKE = "And that's it. I'd keep going but David is funding this on vibes and a free-tier API key. The tokens are gone. The wisdom lives on. Swim along.";
+
+// Enforce 1–2 sentences max for Ghost Diver (backend sometimes ignores prompt)
+function truncateToTwoSentences(text) {
+  if (!text || typeof text !== 'string') return text;
+  const trimmed = text.trim();
+  const sentences = trimmed.split(/(?<=[.!?])\s+/).filter(s => s.trim());
+  const kept = sentences.slice(0, 2).join(' ').trim();
+  return kept || trimmed;
+}
 
 const styles = `
 @keyframes npc-chat-in {
@@ -71,7 +78,7 @@ export default function NPCChatOverlay({ onClose, questionsUsed = 0, questionLim
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `I used to be a product manager. Now I'm whatever this is. You've got ${remaining} questions about the guy who built this place. I know his career suspiciously well.`,
+      content: `I used to be a product manager too, until I failed to do my safety stop. Now I'm whatever this is. You've got ${remaining} questions about me, I mean David. I know his career suspiciously well.`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -104,7 +111,8 @@ export default function NPCChatOverlay({ onClose, questionsUsed = 0, questionLim
     setLoading(true);
 
     const history = messages.map(m => ({ role: m.role, content: m.content }));
-    const answer = await askNPCDiver(question, history);
+    let answer = await askNPCDiver(question, history);
+    answer = truncateToTwoSentences(answer);
 
     onGhostDiverExchange?.(question, answer);
 

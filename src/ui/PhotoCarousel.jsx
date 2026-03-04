@@ -48,6 +48,7 @@ const styles = {
   imageWrapper: {
     maxWidth,
     maxHeight,
+    minHeight: 360,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -56,7 +57,7 @@ const styles = {
     maxWidth: '100%',
     maxHeight: maxHeight - 40,
     objectFit: 'contain',
-    opacity,
+    opacity: opacity ?? 1,
     transition: 'opacity 0.2s ease',
   }),
   caption: {
@@ -161,7 +162,7 @@ export default function PhotoCarousel({ photos, onClose }) {
             key={index}
             src={current?.src}
             alt=""
-            style={styles.image(imageLoaded ? 1 : 0)}
+            style={styles.image(1)}
             onLoad={() => setImageLoaded(true)}
             onError={handleImageError}
           />

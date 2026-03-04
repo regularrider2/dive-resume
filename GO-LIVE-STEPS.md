@@ -9,11 +9,12 @@ Follow these steps in order. Check off each step when done. Every step has a tim
 | Part | What | Time |
 |------|------|------|
 | 1 | Supabase (account, table, photos) | ~16 min |
-| 2 | .env file | ~2 min |
+| 2 | .env file + resume PDF | ~3 min |
 | 3 | AI updates content.json (you send URL + filenames) | ~1 min |
 | 4 | GitHub (if needed) | ~5 min |
 | 5 | Vercel (deploy + env vars + analytics) | ~7 min |
 | 6 | Ghost Diver (knowledge + deploy) | ~21–26 min |
+| 7 | Custom domain (optional) | ~10 min |
 
 ---
 
@@ -102,6 +103,19 @@ CREATE POLICY "Allow anonymous inserts"
    - **VITE_SUPABASE_ANON_KEY** — paste the anon key you copied in Step 1.2.
 5. Save the file.  
    Do **not** commit `.env` to git (it’s already in `.gitignore`).
+
+- [ ] Done
+
+---
+
+### Step 2.2 — Add your resume PDF so “View Resume” works — ~1 min
+
+The **View Resume** link appears in three places: the title screen, the “Let’s Connect” dropdown, and the completion overlay. They all use `content.meta.resumePageUrl`, which is set to **`/resume.pdf`** in `content.json`.
+
+1. Put your resume PDF in the project as **`public/resume.pdf`** (create the `public` folder if it doesn’t exist).
+2. After you deploy, the link will open your PDF in a new tab (e.g. `https://yoursite.vercel.app/resume.pdf`).
+
+If you prefer to host the PDF elsewhere (e.g. Supabase Storage or another URL), change **`resumePageUrl`** in `src/config/content.json` to that full URL (e.g. `"https://xxxx.supabase.co/storage/v1/object/public/resume/david-gordon-resume.pdf"`).
 
 - [ ] Done
 
@@ -216,11 +230,15 @@ The Ghost Diver is the NPC in The Reef that answers hiring managers’ questions
 
 ---
 
-### Step 6.3 — Set your OpenAI API key in Supabase — ~2 min
+### Step 6.3 — Set your Anthropic API key in Supabase — ~2 min
 
-1. Get an API key from **https://platform.openai.com/api-keys** (you need an OpenAI account).
-2. In Supabase: **Project Settings → Edge Functions → Secrets**, add **OPENAI_API_KEY** with your key.  
-   Or use the CLI: **`supabase secrets set OPENAI_API_KEY=sk-your-key-here`**
+1. **Get an Anthropic API key**
+   - Go to **https://console.anthropic.com** and sign in (with Google or email).
+   - In the left sidebar, open **Settings** → **API keys** (or go to **https://console.anthropic.com/settings/keys**).
+   - Click **Create Key**, give it a name (e.g. “Ghost Diver”), then **Create Key** again.
+   - **Copy the key immediately** — you won’t be able to see it again. (You get free credits on signup; you can create more keys later if needed.)
+2. In Supabase: **Project Settings → Edge Functions → Secrets**, add **ANTHROPIC_API_KEY** with your key.  
+   Or use the CLI: **`supabase secrets set ANTHROPIC_API_KEY=sk-ant-your-key-here`**
 
 - [ ] Done
 
@@ -228,10 +246,26 @@ The Ghost Diver is the NPC in The Reef that answers hiring managers’ questions
 
 ### Step 6.4 — Deploy the Ghost Diver Edge Function — ~3 min
 
-1. Install the Supabase CLI if you haven’t: **https://supabase.com/docs/guides/cli**
-2. Log in and link your project: **`supabase login`** then **`supabase link`** (select your project).
-3. From the project root, run: **`supabase functions deploy npc-chat`**
-4. When it finishes, the Ghost Diver in the game will respond in natural language using your knowledge. No extra app env vars needed if you already set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+In your terminal, from the project folder, run these **in order** (one-time: login and link; then deploy):
+
+```bash
+npx supabase login
+```
+(Complete sign-in in the browser if it opens.)
+
+```bash
+npx supabase link
+```
+(Choose your Supabase project when prompted.)
+
+```bash
+npx supabase functions deploy npc-chat --no-verify-jwt
+```
+(The `--no-verify-jwt` flag lets the frontend call the function with your publishable key; the function is public and only answers questions about you.)
+
+When the deploy finishes, the Ghost Diver works for anyone who opens your site. No need to run anything else.
+
+**Ghost Diver still not working?** The live site (Vercel) must have **VITE_SUPABASE_URL** and **VITE_SUPABASE_ANON_KEY** set. In Vercel → your project → **Settings** → **Environment Variables**, add them (same values as in your `.env`), then **Redeploy** the latest deployment so the new build picks them up.
 
 - [ ] Done
 
@@ -250,6 +284,11 @@ Your game is now:
 **`https://dive-resume.vercel.app?ref=jane-google`**
 
 Every new push to `main` auto-deploys. To update what the Ghost Diver says: edit `david-knowledge.md`, run **`npm run build:ghost-diver`**, then **`supabase functions deploy npc-chat`**.
+
+**Local vs Vercel (why they can differ):**
+- **Vercel** always uses the **Supabase Edge Function** (`npc-chat`) if `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are set in Vercel env. So prompt/length changes require: **`npm run build:ghost-diver`** then **`supabase functions deploy npc-chat`** — the front-end deploy alone does not update the Ghost Diver.
+- **Local** uses the Edge Function when those same env vars are in `.env`; if you only set `VITE_OPENAI_API_KEY`, the app calls OpenAI directly from the browser (different model and prompt in `src/engine/npcChat.js`). So local and Vercel can differ if one uses Supabase and the other uses OpenAI, or if the Edge Function wasn’t redeployed after a change.
+- **Answer length:** The UI now truncates all Ghost Diver answers to at most 2 sentences, so even if the API returns more, only 1–2 sentences are shown.
 
 ---
 
@@ -278,6 +317,41 @@ Visitors vs players, completion rate, resume views, lobster deliveries — see *
 
 ---
 
-**Custom domain (optional):** If you want your own URL (e.g. `deepdive.yourname.com`), add it in Vercel → **Settings → Domains**, then add the DNS records at your registrar. — **~10 min**
+## Part 7: Custom domain (optional) — ~10 min
+
+If you want your site on your own URL (e.g. `deepdive.yourname.com` or `resume.yourname.com`):
+
+### Step 7.1 — Add the domain in Vercel — ~2 min
+
+1. In the Vercel dashboard, open your project.
+2. Go to **Settings** → **Domains**.
+3. Enter your domain (e.g. `deepdive.yourname.com`) and click **Add**.
+4. Vercel will show you which DNS records to create (usually an **A** record or **CNAME**).
+
+- [ ] Done
+
+---
+
+### Step 7.2 — Add DNS records at your registrar — ~5 min
+
+1. Log in to where you bought the domain (Namecheap, Google Domains, Cloudflare, etc.).
+2. Open the DNS settings for that domain.
+3. Add the record(s) Vercel showed you (e.g. **A** record pointing to Vercel’s IP, or **CNAME** for `www` pointing to `cname.vercel-dns.com`).
+4. Save. DNS can take a few minutes to a few hours to propagate.
+
+- [ ] Done
+
+---
+
+### Step 7.3 — Confirm in Vercel — ~1 min
+
+1. Back in Vercel → **Settings** → **Domains**, wait until the domain shows as **Valid** (SSL is auto-provisioned).
+2. Optional: add **www** as well so both `yourdomain.com` and `www.yourdomain.com` work; Vercel will suggest the right CNAME.
+
+When it’s valid, your site is live at your custom URL. You can note it in **GO-LIVE-NOTES-TEMPLATE.txt** under “Custom Domain”.
+
+- [ ] Done
+
+---
 
 If any step is unclear, say which number you’re on and what you see — we can fix it.

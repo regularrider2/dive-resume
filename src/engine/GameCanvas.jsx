@@ -398,7 +398,6 @@ const NPC_DIVER_Y = Math.round((57 / 130) * (theme.world?.height ?? 2000)); // 5
 
 const NPC_QUIPS = [
   '👻 I know his whole career. Ask me anything.',
-  '👻 I\'ve got answers. For now.',
   '👻 I\'ve been down here a while. Come say hi.',
 ];
 
@@ -555,8 +554,7 @@ export default function GameCanvas({
       const spacePressed = consumeInteract();
       const tapPressed = consumeTouchInteract();
 
-      // Wise Diver: Space/tap in range opens chat (same as re-opening items)
-      if (npcInRangeNow && (spacePressed || tapPressed) && !dialogOpen) onOpenNPCChat?.();
+      // Ghost Diver chat opens when you swim into him (handled above via justEnteredNPCRange); no space/tap needed
 
       // Auto-open undiscovered items on proximity
       if (nearest) {
@@ -777,7 +775,7 @@ export default function GameCanvas({
             const reviewLabel = isTouchDev ? '👆 Re-read: Photo Gallery' : '[SPACE] Re-read: Photo Gallery';
             drawLabelBubble(ctx, item.x, itemY - 20 * p, reviewLabel, p);
           } else if (!discovered) {
-            drawLabelBubble(ctx, item.x, itemY - 20 * p, '🤿 Award Winning Photographer', p);
+            drawLabelBubble(ctx, item.x, itemY - 20 * p, '📷 Award Winning Photographer', p);
           }
           ctx.restore();
         } else if (item.type === 'delhi') {
@@ -787,7 +785,7 @@ export default function GameCanvas({
             const reviewLabel = isTouchDev ? '👆 Re-read: Delhi' : '[SPACE] Re-read: Delhi';
             drawLabelBubble(ctx, item.x, itemY - 22 * p, reviewLabel, p);
           } else if (!discovered) {
-            drawLabelBubble(ctx, item.x, itemY - 22 * p, '🤿 Woof!', p);
+            drawLabelBubble(ctx, item.x, itemY - 22 * p, '🐕 Woof!', p);
           }
         }
       }

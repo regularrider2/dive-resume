@@ -278,14 +278,15 @@ const inlineGalleryStyles = {
   },
   imageWrap: {
     maxWidth: '100%',
-    maxHeight: 320,
+    maxHeight: 380,
+    minHeight: 200,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   image: {
     maxWidth: '100%',
-    maxHeight: 280,
+    maxHeight: 340,
     objectFit: 'contain',
     transition: 'opacity 0.2s ease',
   },

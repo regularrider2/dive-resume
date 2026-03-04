@@ -269,12 +269,10 @@ You found my camera. I'm an award-winning wildlife and nature photographer. Here
 | | | 👻 My lips are sealed. And rate-limited. |
 | | | 👻 Budget: $0.00. Questions: closed. |
 | `NPCChatOverlay.jsx` | Header | Ghost Diver |
-| `NPCChatOverlay.jsx` | Greeting (template) | I used to be a product manager. Now I'm whatever this is. You've got \<remaining\> questions about the guy who built this place. I know his career suspiciously well. |
+| `NPCChatOverlay.jsx` | Greeting (template) | I used to be a product manager too, until I failed to do my safety stop. Now I'm whatever this is. You've got \<remaining\> questions about me, I mean David. I know his career suspiciously well. |
 | `NPCChatOverlay.jsx` | Token pips | X left / OUT OF TOKENS |
-| `NPCChatOverlay.jsx` | Suggested questions | What did he actually build at Amazon? |
-| | | What's his strongest technical skill? |
-| | | What kind of role is he looking for? |
-| | | What's unusual about his background? |
+| `NPCChatOverlay.jsx` | Suggested questions | What did he build at Amazon? |
+| | | What photography award did he win? |
 | `NPCChatOverlay.jsx` | BROKE_JOKE (after last answer) | And that's it. I'd keep going but David is funding this on vibes and a free-tier API key. The tokens are gone. The wisdom lives on. Swim along. |
 | `NPCChatOverlay.jsx` | Input placeholder | Ask about David's experience... |
 | `NPCChatOverlay.jsx` | Submit button | Ask → |
