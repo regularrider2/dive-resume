@@ -505,7 +505,7 @@ export default function GameCanvas({
         }
         const speed = DIVER_SPEED * Math.min(mag, 1) * dt * (keys.shift ? 1.5 : 1);
         const newX = Math.max(20, Math.min(WORLD_WIDTH - 20, state.playerX + normDx * speed));
-        const newY = Math.max(10, Math.min(WORLD_HEIGHT - 50, state.playerY + normDy * speed));
+        const newY = Math.max(0, Math.min(WORLD_HEIGHT - 50, state.playerY + normDy * speed));
         if (normDx !== 0) directionRef.current = normDx > 0 ? 1 : -1;
         onUpdatePlayer(newX, newY);
         idleTimerRef.current = 0; // reset idle on movement
@@ -665,15 +665,14 @@ export default function GameCanvas({
 
     updateCreatures(creaturesRef.current, dt, WORLD_WIDTH);
 
-    // On mobile: narrower horizontal viewport (zoom) + shorter vertical viewport so less "all navy" and items stay in frame
+    // On mobile: full world width (no horizontal strip/cutoff), shorter vertical viewport only
     const isMobile = w < 768 || (typeof window !== 'undefined' && isTouchDevice());
-    const viewportWidthWorld = isMobile ? WORLD_WIDTH * 0.38 : WORLD_WIDTH;
+    const viewportWidthWorld = WORLD_WIDTH;
     const scale = w / viewportWidthWorld;
     let viewHeightWorld = h / scale;
     if (isMobile) viewHeightWorld *= 0.62;
 
     const camera = updateCamera(cameraRef.current, state.playerX, state.playerY, viewportWidthWorld, viewHeightWorld);
-    if (isMobile) camera.x = (WORLD_WIDTH - viewportWidthWorld) / 2;
 
     ctx.save();
     ctx.imageSmoothingEnabled = false;
@@ -996,14 +995,21 @@ export default function GameCanvas({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    const resize = () => {
+      const vw = window.visualViewport?.width ?? window.innerWidth;
+      const vh = window.visualViewport?.height ?? window.innerHeight;
+      canvas.width = vw;
+      canvas.height = vh;
+    };
     resize();
     window.addEventListener('resize', resize);
+    window.visualViewport?.addEventListener('resize', resize);
     initInput();
     if (isTouchDevice()) initTouchInput(canvas);
     rafRef.current = requestAnimationFrame(gameLoop);
     return () => {
       window.removeEventListener('resize', resize);
+      window.visualViewport?.removeEventListener('resize', resize);
       destroyInput(); destroyTouchInput();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };

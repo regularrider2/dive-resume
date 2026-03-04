@@ -10,29 +10,33 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
 
   // === DISCOVERED COUNTER (top-left) ===
   const fontSize = Math.max(14, p * 7);
+  const pillH = fontSize + 14;
   ctx.font = `bold ${fontSize}px monospace`;
   ctx.textAlign = 'left';
-  // background pill
   const discText = `Discovered: ${state.discoveredItems?.size ?? 0} / ${state.totalItems ?? 0}`;
   const discW = ctx.measureText(discText).width + 20;
   ctx.fillStyle = 'rgba(0,0,0,0.55)';
   ctx.beginPath();
-  ctx.roundRect(8, 8, discW, fontSize + 14, 6);
+  ctx.roundRect(8, 8, discW, pillH, 6);
   ctx.fill();
   ctx.fillStyle = ui.text;
-  ctx.fillText(discText, 18, 8 + fontSize + 2);
+  ctx.textBaseline = 'middle';
+  ctx.fillText(discText, 18, 8 + pillH / 2);
+  ctx.textBaseline = 'alphabetic';
 
   // === LOBSTER COUNTER (below discovery counter) ===
   if (state.lobsterTotal > 0) {
     const lobText = `🦞 ${state.lobstersCollected ?? 0} / ${state.lobsterTotal}`;
     const lobW = ctx.measureText(lobText).width + 20;
-    const lobY = 8 + fontSize + 14 + 6;
+    const lobY = 8 + pillH + 6;
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.beginPath();
-    ctx.roundRect(8, lobY, lobW, fontSize + 14, 6);
+    ctx.roundRect(8, lobY, lobW, pillH, 6);
     ctx.fill();
     ctx.fillStyle = state.carryingLobster ? '#FFD700' : ui.text;
-    ctx.fillText(lobText, 18, lobY + fontSize + 2);
+    ctx.textBaseline = 'middle';
+    ctx.fillText(lobText, 18, lobY + pillH / 2);
+    ctx.textBaseline = 'alphabetic';
   }
 
   // === ZONE LABEL (top-center desktop; top-right mobile, smaller) ===

@@ -69,7 +69,7 @@ export default function App() {
       screen: 'playing',
       audioUnlocked: true,
       startTime: Date.now(),
-      playerY: 40,
+      playerY: 0,
     }));
   }, []);
 
