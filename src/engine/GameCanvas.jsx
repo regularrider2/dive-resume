@@ -24,7 +24,6 @@ const SWIM_SOUND_INTERVAL = 400;
 
 function getPixelSize() {
   const base = theme.pixelSize ?? 3;
-  if (typeof window !== 'undefined' && window.innerWidth < 768 && ('ontouchstart' in window)) return 2.2;
   if (typeof window !== 'undefined' && window.innerWidth < 500) return Math.max(1, base - 1);
   return base;
 }
@@ -451,10 +450,10 @@ export default function GameCanvas({
     const h = canvas.height;
     const p = getPixelSize();
     const isMobile = w < 768 || (typeof window !== 'undefined' && isTouchDevice());
-    // On mobile: remap item x into the 15%–85% band (within reef walls)
-    const mobileClusterX = (worldX) => WORLD_WIDTH * 0.15 + (worldX / WORLD_WIDTH) * (WORLD_WIDTH * 0.7);
-    const mobilePlayerMinX = WORLD_WIDTH * 0.13;
-    const mobilePlayerMaxX = WORLD_WIDTH * 0.87;
+    // On mobile: remap item x into center band (within visible viewport)
+    const mobileClusterX = (worldX) => WORLD_WIDTH * 0.25 + (worldX / WORLD_WIDTH) * (WORLD_WIDTH * 0.5);
+    const mobilePlayerMinX = WORLD_WIDTH * 0.2;
+    const mobilePlayerMaxX = WORLD_WIDTH * 0.8;
 
     // Clear to a solid background so sky/water never show stale or undrawn bands
     ctx.fillStyle = '#1a3060';
@@ -676,11 +675,12 @@ export default function GameCanvas({
 
     updateCreatures(creaturesRef.current, dt, WORLD_WIDTH);
 
-    const viewportWidthWorld = WORLD_WIDTH;
+    const viewportWidthWorld = isMobile ? WORLD_WIDTH * 0.56 : WORLD_WIDTH;
     const scale = w / viewportWidthWorld;
     const viewHeightWorld = h / scale;
 
     const camera = updateCamera(cameraRef.current, state.playerX, state.playerY, viewportWidthWorld, viewHeightWorld);
+    if (isMobile) camera.x = (WORLD_WIDTH - viewportWidthWorld) / 2;
 
     ctx.save();
     ctx.imageSmoothingEnabled = false;

@@ -144,10 +144,13 @@ function buildReefWallCache(p) {
   };
 }
 
-function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p) {
+function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p, anchorLeftX, anchorRightX) {
   if (!_reefWallCache) _reefWallCache = buildReefWallCache(p);
   const cache = _reefWallCache;
   if (!cache) return;
+
+  const leftX = anchorLeftX ?? 0;
+  const rightX = anchorRightX ?? WORLD_WIDTH;
 
   const edges = side === 'left' ? cache.leftEdges : cache.rightEdges;
   const visTop = cameraY - 20;
@@ -174,25 +177,25 @@ function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p) {
     else ctx.fillStyle = rockLight;
 
     if (side === 'left') {
-      ctx.fillRect(0, worldY, e.w, step + 1);
+      ctx.fillRect(leftX, worldY, e.w, step + 1);
     } else {
-      ctx.fillRect(WORLD_WIDTH - e.w, worldY, e.w, step + 1);
+      ctx.fillRect(rightX - e.w, worldY, e.w, step + 1);
     }
 
     ctx.fillStyle = rockDark;
     if (side === 'left') {
-      ctx.fillRect(e.w - 2 * p, worldY, 2 * p, step + 1);
+      ctx.fillRect(leftX + e.w - 2 * p, worldY, 2 * p, step + 1);
     } else {
-      ctx.fillRect(WORLD_WIDTH - e.w, worldY, 2 * p, step + 1);
+      ctx.fillRect(rightX - e.w, worldY, 2 * p, step + 1);
     }
 
     if (r > 0.5) {
       ctx.fillStyle = 'rgba(0,0,0,0.12)';
       const crackW = e.w * (0.3 + r * 0.4);
       if (side === 'left') {
-        ctx.fillRect(e.w - crackW, worldY + step * 0.5, crackW, p);
+        ctx.fillRect(leftX + e.w - crackW, worldY + step * 0.5, crackW, p);
       } else {
-        ctx.fillRect(WORLD_WIDTH - e.w, worldY + step * 0.5, crackW, p);
+        ctx.fillRect(rightX - e.w, worldY + step * 0.5, crackW, p);
       }
     }
 
@@ -200,7 +203,7 @@ function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p) {
       const ci = Math.floor(e.ledgeSeed * coralColors.length);
       const ci2 = (ci + 1) % coralColors.length;
       const dir = side === 'left' ? 1 : -1;
-      const edgeX = side === 'left' ? e.w : WORLD_WIDTH - e.w;
+      const edgeX = side === 'left' ? leftX + e.w : rightX - e.w;
       const baseY = worldY + step * 0.5;
       const fanW = (8 + e.ledgeSeed * 10) * p;
       const fingers = 3 + Math.floor(e.ledgeSeed * 3);
@@ -230,13 +233,13 @@ function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p) {
       const ledgeW = (15 + e.ledgeSeed * 20) * p;
       const ledgeH = 4 * p;
       if (side === 'left') {
-        ctx.fillRect(e.w - 2 * p, worldY, ledgeW, ledgeH);
+        ctx.fillRect(leftX + e.w - 2 * p, worldY, ledgeW, ledgeH);
         ctx.fillStyle = rockDark;
-        ctx.fillRect(e.w - 2 * p, worldY + ledgeH, ledgeW, p);
+        ctx.fillRect(leftX + e.w - 2 * p, worldY + ledgeH, ledgeW, p);
       } else {
-        ctx.fillRect(WORLD_WIDTH - e.w - ledgeW + 2 * p, worldY, ledgeW, ledgeH);
+        ctx.fillRect(rightX - e.w - ledgeW + 2 * p, worldY, ledgeW, ledgeH);
         ctx.fillStyle = rockDark;
-        ctx.fillRect(WORLD_WIDTH - e.w - ledgeW + 2 * p, worldY + ledgeH, ledgeW, p);
+        ctx.fillRect(rightX - e.w - ledgeW + 2 * p, worldY + ledgeH, ledgeW, p);
       }
     }
   }
@@ -692,8 +695,8 @@ export function drawBackground(ctx, cameraX, cameraY, worldViewWidth, worldViewH
 
   drawOceanFloor(ctx, worldViewWidth, p);
 
-  drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, 'left', p);
-  drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, 'right', p);
+  drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, 'left', p, cameraX, cameraX + worldViewWidth);
+  drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, 'right', p, cameraX, cameraX + worldViewWidth);
 
   const trenchStart = zones.find(z => z.id === 'trench')?.startY ?? 2000;
   const deepStart = zones.find(z => z.id === 'deep')?.startY ?? 1500;
