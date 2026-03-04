@@ -675,12 +675,13 @@ export default function GameCanvas({
 
     updateCreatures(creaturesRef.current, dt, WORLD_WIDTH);
 
-    // On mobile: full world width so reef/coral and water fill left and right; items are clustered in center
-    const viewportWidthWorld = WORLD_WIDTH;
+    // On mobile: narrower viewport (zoom in) so it doesn't look tiny; reef still at edges, items clustered in center
+    const viewportWidthWorld = isMobile ? WORLD_WIDTH * 0.56 : WORLD_WIDTH;
     const scale = w / viewportWidthWorld;
     const viewHeightWorld = h / scale;
 
     const camera = updateCamera(cameraRef.current, state.playerX, state.playerY, viewportWidthWorld, viewHeightWorld);
+    if (isMobile) camera.x = (WORLD_WIDTH - viewportWidthWorld) / 2;
 
     ctx.save();
     ctx.imageSmoothingEnabled = false;
