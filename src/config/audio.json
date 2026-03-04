@@ -1,0 +1,72 @@
+{
+  "masterVolume": 0.3,
+  "enabled": true,
+  "effects": {
+    "discover": {
+      "frequencies": [523, 659, 784],
+      "duration": 300,
+      "type": "sine",
+      "volume": 0.4
+    },
+    "swim": {
+      "frequencies": [200],
+      "duration": 100,
+      "type": "sine",
+      "volume": 0.05
+    },
+    "bubble": {
+      "frequencies": [600, 800],
+      "duration": 150,
+      "type": "sine",
+      "volume": 0.08
+    },
+    "zoneChange": {
+      "frequencies": [330, 440, 554],
+      "duration": 400,
+      "type": "triangle",
+      "volume": 0.3
+    },
+    "dialogOpen": {
+      "frequencies": [440, 554],
+      "duration": 200,
+      "type": "sine",
+      "volume": 0.2
+    },
+    "dialogClose": {
+      "frequencies": [554, 440],
+      "duration": 150,
+      "type": "sine",
+      "volume": 0.15
+    },
+    "decompressionStart": {
+      "frequencies": [220, 277, 330],
+      "duration": 500,
+      "type": "triangle",
+      "volume": 0.3
+    },
+    "decompressionComplete": {
+      "frequencies": [330, 440, 554, 659],
+      "duration": 600,
+      "type": "sine",
+      "volume": 0.4
+    },
+    "gameOver": {
+      "frequencies": [220, 185, 147, 110],
+      "duration": 700,
+      "type": "sawtooth",
+      "volume": 0.35
+    },
+    "sharkBite": {
+      "frequencies": [80, 60, 40],
+      "duration": 500,
+      "type": "sawtooth",
+      "volume": 0.5
+    }
+  },
+  "ambient": {
+    "enabled": false,
+    "baseFrequency": 80,
+    "volume": 0.06,
+    "type": "sine"
+  }
+}

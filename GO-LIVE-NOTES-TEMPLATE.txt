@@ -1,0 +1,36 @@
+# Deep Dive — Go Live Notes
+# Copy this into Notes. Fill as you go. Do not share — contains secrets.
+
+# --- SUPABASE ---
+Supabase Project Name =
+Supabase Project Password =
+Supabase Project ID =
+Supabase Project URL =
+Supabase Publishable Key =
+
+# Photos bucket filenames
+Photo Delhi =
+Photo Gallery 1 =
+Photo Gallery 2 =
+Photo Gallery 3 =
+
+# --- .ENV (use Supabase Project URL and Publishable Key above) ---
+
+# --- GITHUB ---
+GitHub Username =
+GitHub Repo Name =
+GitHub Repo URL =
+
+# --- VERCEL ---
+Vercel Project Name =
+Vercel Live URL =
+Full Share URL =
+
+# --- GHOST DIVER ---
+OpenAI API Key =
+
+# --- CUSTOM DOMAIN (optional) ---
+Custom Domain =
+
+# --- SHARING ---
+# Example: [Full Share URL]?ref=jane-google

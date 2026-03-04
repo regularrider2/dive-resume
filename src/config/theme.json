@@ -1,0 +1,207 @@
+{
+  "pixelSize": 2,
+  "world": {
+    "width": 800,
+    "height": 1700
+  },
+  "zones": [
+    { "id": "surface", "startY": 0, "endY": 200 },
+    { "id": "shallows", "startY": 200, "endY": 500 },
+    { "id": "reef", "startY": 500, "endY": 900 },
+    { "id": "deep", "startY": 900, "endY": 1300 },
+    { "id": "trench", "startY": 1300, "endY": 1700 }
+  ],
+  "interactionRadius": 60,
+  "colors": {
+    "water": {
+      "surface": "#3cb8e0",
+      "shallows": "#1a8aad",
+      "reef": "#0e6b8a",
+      "deep": "#073f5c",
+      "trench": "#031b2e"
+    },
+    "sand": "#c4a35a",
+    "coral": ["#ff6b6b", "#ff8e72", "#ffa07a", "#e55b5b"],
+    "seaweed": ["#2d6b3f", "#3a8f52", "#4aad64"],
+    "treasureGlow": "#ffdd44",
+    "ui": {
+      "background": "rgba(0, 20, 40, 0.85)",
+      "border": "#4488aa",
+      "text": "#e0f0ff",
+      "prompt": "#88ccff",
+      "title": "#ffdd44"
+    }
+  },
+  "diver": {
+    "width": 16,
+    "height": 24,
+    "speed": 3,
+    "colors": {
+      "suit": "#1a1a2e",
+      "suitLight": "#2a2a44",
+      "suitDark": "#0e0e1e",
+      "skin": "#f0c08a",
+      "skinShadow": "#d4a06a",
+      "mask": "#44ccee",
+      "maskFrame": "#333333",
+      "tank": "#888888",
+      "tankDark": "#666666",
+      "tankHighlight": "#aaaaaa",
+      "hose": "#555555",
+      "fins": "#228844",
+      "finsDark": "#1a6634",
+      "outline": "#111122"
+    }
+  },
+  "referenceDiver": {
+    "colors": {
+      "suit": "#6b3520",
+      "suitLight": "#8b4530",
+      "suitDark": "#4b2010",
+      "skin": "#d4a67a",
+      "skinShadow": "#b4865a",
+      "mask": "#44ccee",
+      "maskFrame": "#333333",
+      "tank": "#777777",
+      "tankDark": "#555555",
+      "tankHighlight": "#999999",
+      "hose": "#555555",
+      "fins": "#cc6633",
+      "finsDark": "#aa4420",
+      "outline": "#2a1508"
+    }
+  },
+  "lobster": {
+    "shellColor": "#CC3333",
+    "shellLight": "#DD5555",
+    "shellDark": "#991a1a",
+    "clawColor": "#DD4444",
+    "clawDark": "#BB2222",
+    "antennaeColor": "#AA2222",
+    "eyeColor": "#111111",
+    "eyeWhite": "#eeeeee",
+    "legColor": "#cc5544",
+    "glowColor": "#FF6644",
+    "outline": "#661111"
+  },
+  "delhi": {
+    "black": "#1a1a1a",
+    "blackLight": "#2a2a2a",
+    "tan": "#c49a5e",
+    "tanLight": "#d4aa6e",
+    "tanDark": "#a47a4e",
+    "nosePad": "#111111",
+    "eyeColor": "#1a1a0a",
+    "eyeWhite": "#eeeeee",
+    "tongue": "#dd6666",
+    "domeColor": "rgba(150,210,240,0.35)",
+    "domeOutline": "rgba(100,180,220,0.6)",
+    "glowColor": "#FFAA44",
+    "outline": "#0a0a0a"
+  },
+  "dslrCamera": {
+    "bodyColor": "#222222",
+    "bodyLight": "#333333",
+    "lensColor": "#444444",
+    "lensDark": "#222222",
+    "lensRing": "#888888",
+    "flashColor": "#CCCCCC",
+    "gripColor": "#1a1a1a",
+    "glowColor": "#FFDD44",
+    "outline": "#111111"
+  },
+  "shipwreck": {
+    "hullColor": "#5C4033",
+    "hullDark": "#3a2820",
+    "hullLight": "#7a5a48",
+    "mastColor": "#7A5C3E",
+    "mastDark": "#5a3c2e",
+    "deckColor": "#6a4a38",
+    "accentColor": "#3A6B35",
+    "outline": "#2a1a10"
+  },
+  "boat": {
+    "hullColor": "#8B4513",
+    "hullDark": "#6B3010",
+    "hullLight": "#A05520",
+    "deckColor": "#c49a6c",
+    "cabinColor": "#dddddd",
+    "cabinDark": "#bbbbbb",
+    "windowColor": "#44aadd",
+    "mastColor": "#666666",
+    "flagColor": "#dd3333",
+    "waterlineColor": "#2a7a9a",
+    "outline": "#3a2010"
+  },
+  "creatures": {
+    "fish": {
+      "sizes": [5, 6, 7, 8],
+      "colors": ["#ff8844", "#44bbff", "#ffcc33", "#66dd88", "#ff66aa"],
+      "darkColors": ["#cc6622", "#2299cc", "#ccaa11", "#44bb66", "#cc4488"],
+      "bellyColors": ["#ffcc88", "#aaddff", "#ffeeaa", "#aaffcc", "#ffaacc"],
+      "speed": [0.5, 1.0, 1.5, 2.0]
+    },
+    "turtle": {
+      "width": 20,
+      "height": 16,
+      "color": "#5a8f5a",
+      "colorDark": "#3a6f3a",
+      "shellColor": "#7ab87a",
+      "shellPattern": "#5a9a5a",
+      "headColor": "#6aaa6a",
+      "eyeColor": "#111111",
+      "flipperColor": "#4a7f4a",
+      "bellyColor": "#a0d8a0",
+      "speed": 0.3
+    },
+    "shark": {
+      "width": 50,
+      "height": 18,
+      "color": "#556677",
+      "colorDark": "#3a4a5a",
+      "belly": "#99aabb",
+      "finColor": "#4a5a6a",
+      "eyeColor": "#111111",
+      "gillColor": "#445566",
+      "opacity": 0.75,
+      "speed": 0.4
+    },
+    "jellyfish": {
+      "bellColor": "#cc88ff",
+      "rimColor": "#bb66ee",
+      "tentacleColor": "rgba(180,140,220,0.5)",
+      "armColor": "rgba(200,160,240,0.6)",
+      "glowColor": "#cc88ff",
+      "innerColor": "#bb66dd",
+      "opacity": 0.6,
+      "speed": 0.15
+    },
+    "mantaRay": {
+      "bodyColor": "#3a4a5a",
+      "bellyColor": "#8899aa",
+      "tailColor": "#2a3a4a",
+      "speed": 0.25
+    }
+  },
+  "particles": {
+    "bubbleCount": 3,
+    "bubbleSpeed": 0.8,
+    "bubbleLifetime": 2000,
+    "discoveryBurstCount": 12
+  },
+  "joystick": {
+    "size": 120,
+    "offset": 30
+  },
+  "carousel": {
+    "maxWidth": 900,
+    "maxHeight": 600,
+    "imageMaxWidth": 850,
+    "imageMaxHeight": 500
+  },
+  "camera": {
+    "lerpFactor": 0.08,
+    "verticalOffsetRatio": 0.3,
+    "zoom": 0.88
+  }
+}

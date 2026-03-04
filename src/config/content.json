@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "title": "DEEP DIVE: DAVID GORDON",
+    "subtitle": "An underwater interactive resume. Discover treasures to learn about my career, projects, and how I think.",
+    "resumePageUrl": "/resume.pdf"
+  },
+  "startScreen": {
+    "instructions": [
+      { "icon": "🎮", "text": "Arrow keys / WASD / joystick to swim" },
+      { "icon": "✨", "text": "Swim over glowing items to discover them — no button needed" },
+      { "icon": "🦞", "text": "Find the lobster deep in The Trench and bring it back to the boat for dinner" },
+      { "icon": "⚠️", "text": "Watch your depth — ascend too fast and it's game over" },
+      { "icon": "🏆", "text": "Discover everything to complete the dive" }
+    ],
+    "buttonLabel": "DIVE IN"
+  },
+  "zones": [
+    { "id": "surface", "label": "THE SURFACE", "announcement": "THE SURFACE — Who I Am", "flavor": "A message for whoever finds it." },
+    { "id": "shallows", "label": "THE SHALLOWS", "announcement": "THE SHALLOWS — What I Build", "flavor": "Where tens of millions of customers meet generative AI." },
+    { "id": "reef", "label": "THE REEF", "announcement": "THE REEF — How I Grew the Business", "flavor": "The commercial foundation under the AI work." },
+    { "id": "deep", "label": "THE DEEP", "announcement": "THE DEEP — Earlier Career", "flavor": "The career before product management." },
+    { "id": "trench", "label": "THE TRENCH", "announcement": "THE TRENCH — The Personal Side", "flavor": "Not on the resume. Still part of the story." }
+  ],
+  "treasures": [
+    {
+      "id": "why-hire-me",
+      "x": 0.5,
+      "y": 170,
+      "zone": "surface",
+      "title": "Why Hire Me",
+      "content": "To whoever found this —\n\nI'm David. Technical product manager and SSI-certified scuba diver. I've spent seven years at Amazon across product management, growth, and partnerships, most recently building AI features for Alexa that ship to tens of millions of customers. I'm looking for my next opportunity to build AI-powered products at scale.\n\nThere's more scattered across the ocean floor. Swim over the glowing items to learn about my career, and if you find the lobster, bring it back to the boat.\n\n— David",
+      "iconType": "bottle",
+      "enabled": true
+    },
+    {
+      "id": "alexa-cameras",
+      "x": 0.3,
+      "y": 300,
+      "zone": "shallows",
+      "title": "Alexa Smart Home Cameras",
+      "content": "I built AI-powered features that integrate Ring cameras with Alexa+. The system helps customers understand what's happening at home: it organizes camera activity into summaries, describes who's at the door, lets you set custom alerts in plain English, and notices when a household routine breaks. Demoed on stage at Amazon's 2025 Alexa+ launch event.",
+      "iconType": "ring-doorbell",
+      "enabled": true
+    },
+    {
+      "id": "map-view",
+      "x": 0.7,
+      "y": 400,
+      "zone": "shallows",
+      "title": "Alexa Map View",
+      "content": "I owned customer acquisition for a product that let customers build a digital floorplan of their home. Setup abandonment was high, so I dug into the funnel, identified where customers were dropping off, and ran a mix of re-engagement campaigns, exit modals, and customer surveys to bring them back, which significantly reduced abandonment.",
+      "iconType": "blueprint",
+      "enabled": true
+    },
+    {
+      "id": "growth-strategy",
+      "x": 0.5,
+      "y": 600,
+      "zone": "reef",
+      "title": "Alexa Smart Home Growth",
+      "content": "I owned P&L for Amazon's smart home hardware portfolio, with full control over pricing, launch timing, and channel strategy across every major retail event. The insight that drove the biggest results was treating a low-cost device as a gateway into the ecosystem, building an LTV model that proved we could discount aggressively and still come out ahead on lifetime value.",
+      "iconType": "echo-show",
+      "enabled": true
+    },
+    {
+      "id": "deal-expert",
+      "x": 0.7,
+      "y": 750,
+      "zone": "reef",
+      "title": "The Deal Expert",
+      "content": "I was the lead deal subject matter expert across all of Amazon's hardware portfolio. I built the processes and validation checks that every deal team followed before a promotion could go live. The process caught a pricing error where a device had been set to sell at zero dollars, which would have sold out the entire inventory at no revenue. One catch, millions in prevented losses.",
+      "iconType": "treasure-chest",
+      "enabled": true
+    },
+    {
+      "id": "amazon-retail",
+      "x": 0.25,
+      "y": 1000,
+      "zone": "deep",
+      "title": "Amazon Retail",
+      "content": "Amazon, Strategic Account Services — Senior Account Manager | Sep 2018 – Mar 2020\n\nI managed Tier-1 vendor partnerships (Wilson Sporting Goods, Rawlings, PLANO Outdoors) and delivered 40% year-over-year revenue growth. I built a financial modeling automation tool that became the standard across the organization and cut analysis time 30% for a 50+ person org. Won the Little Big Shoe Award and Star of the Quarter.",
+      "iconType": "amazon",
+      "enabled": true
+    },
+    {
+      "id": "centric-brands",
+      "x": 0.75,
+      "y": 1075,
+      "zone": "deep",
+      "title": "Centric Brands",
+      "content": "Centric Brands — Innovation Fellow | Aug 2017 – Aug 2018\n\nSelected for a competitive one-year fellowship at a $100M global apparel company. I built an automated content generation system that replaced manual copywriting across hundreds of SKUs — cutting listing creation from hours to minutes.",
+      "iconType": "lio",
+      "enabled": true
+    },
+    {
+      "id": "education",
+      "x": 0.5,
+      "y": 1150,
+      "zone": "deep",
+      "title": "Education",
+      "content": "University of Pennsylvania, Class of 2016. Economics degree. Turns out studying incentives and tradeoffs is just product management with homework.",
+      "iconType": "penn",
+      "enabled": true
+    }
+  ],
+  "delhi": {
+    "enabled": true,
+    "x": 0.65,
+    "y": 1380,
+    "zone": "trench",
+    "message": "This is Delhi. He's my three-legged best friend. My wife rescued him off the side of the road in India in 2017. Like us, he loves adventure. Three-wheel drive and all.",
+    "photo": {
+      "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/delhi.jpg",
+      "caption": ""
+    }
+  },
+  "lobsters": [
+    {
+      "id": "lobster-1",
+      "x": 0.5,
+      "y": 1600,
+      "zone": "trench",
+      "message": "I love lobstering. I'm SSI-certified and have pulled my fair share out of the deep. Bring this one up — dinner's waiting!",
+      "enabled": true
+    }
+  ],
+  "camera": {
+    "enabled": true,
+    "x": 0.35,
+    "y": 1485,
+    "zone": "trench",
+    "message": "You found my camera. I'm an award-winning wildlife, nature, and astrophotography photographer. Here's a look at the world through my lens.",
+    "buttonText": "View Gallery",
+    "photos": [
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo1.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo2.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo3.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo4.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo5.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo6.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo7.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo8.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo9.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo10.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo11.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo12.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo13.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo14.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo15.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo16.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo17.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo18.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo19.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo20.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo21.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo22.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo23.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo24.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo25.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo26.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo27.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo28.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo29.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo30.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo31.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo32.jpg", "caption": "" },
+      { "src": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/photos/photo33.jpg", "caption": "" }
+    ]
+  },
+  "connectButton": {
+    "label": "Let's Connect",
+    "links": [
+      { "label": "Email Me", "url": "mailto:dgordon2393@icloud.com", "type": "email" },
+      { "label": "LinkedIn", "url": "https://linkedin.com/in/david-gordon-a2200945", "type": "linkedin" },
+      { "label": "610-772-6451", "url": "tel:610-772-6451", "type": "phone" }
+    ]
+  },
+  "decompressionDiver": {
+    "name": "Safety Stop",
+    "message": "This is a safety stop. Real divers hold here to let the nitrogen leave their bloodstream before surfacing. You're doing it because David thought it would be funny to make you wait.",
+    "warningText": "You'll get the bends! Get back down!",
+    "gameOverText": "You ascended too fast. Every diver knows you never skip a safety stop.",
+    "gameOverWithLobsterText": "You rushed to the surface with a lobster and paid the price. There's always another lobster, but there's only one you. Safety first."
+  },
+  "completion": {
+    "message": "You've seen everything. Now let's talk about what I can do for you.",
+    "ctaLinks": [
+      { "label": "Email Me", "url": "mailto:dgordon2393@icloud.com", "type": "email" },
+      { "label": "LinkedIn", "url": "https://linkedin.com/in/david-gordon-a2200945", "type": "linkedin" },
+      { "label": "610-772-6451", "url": "tel:610-772-6451", "type": "phone" }
+    ],
+    "diveAgainLabel": "Dive Again",
+    "keepExploringLabel": "Keep Exploring"
+  },
+  "creatures": [
+    { "type": "fish", "zone": "shallows", "count": 6 },
+    { "type": "fish", "zone": "reef", "count": 4 },
+    { "type": "turtle", "zone": "reef", "count": 1 },
+    { "type": "jellyfish", "zone": "reef", "count": 2 },
+    { "type": "fish", "zone": "deep", "count": 2 },
+    { "type": "shark", "zone": "deep", "count": 1 },
+    { "type": "mantaRay", "zone": "deep", "count": 1 },
+    { "type": "jellyfish", "zone": "deep", "count": 1 },
+    { "type": "jellyfish", "zone": "trench", "count": 2 }
+  ]
+}
