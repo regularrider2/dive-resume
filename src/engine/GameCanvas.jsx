@@ -665,11 +665,13 @@ export default function GameCanvas({
 
     updateCreatures(creaturesRef.current, dt, WORLD_WIDTH);
 
-    // Uniform scale (no zoom) so the world fills the canvas width and there are no side columns
-    const scale = w / WORLD_WIDTH;
+    // On mobile: zoom in slightly (smaller viewport in world units) so it doesn't feel zoomed out; desktop unchanged
+    const isMobile = w < 768 || (typeof window !== 'undefined' && isTouchDevice());
+    const viewportWidthWorld = isMobile ? WORLD_WIDTH * 0.72 : WORLD_WIDTH;
+    const scale = w / viewportWidthWorld;
     const viewHeightWorld = h / scale;
 
-    const camera = updateCamera(cameraRef.current, state.playerX, state.playerY, WORLD_WIDTH, viewHeightWorld);
+    const camera = updateCamera(cameraRef.current, state.playerX, state.playerY, viewportWidthWorld, viewHeightWorld);
 
     ctx.save();
     ctx.imageSmoothingEnabled = false;
@@ -677,7 +679,7 @@ export default function GameCanvas({
     ctx.scale(scale, scale);
     ctx.translate(-camera.x, -camera.y);
 
-    drawBackground(ctx, camera.x, camera.y, WORLD_WIDTH, viewHeightWorld, timestamp, p);
+    drawBackground(ctx, camera.x, camera.y, viewportWidthWorld, viewHeightWorld, timestamp, p);
 
     const visibleTop = camera.y - 80;
     const visibleBottom = camera.y + viewHeightWorld + 80;
@@ -978,7 +980,7 @@ export default function GameCanvas({
         carryingLobster: state.carryingLobster,
         airTimer: state.airTimer ?? 0,
         airTimerActive: state.airTimerActive ?? false,
-      }, p);
+      }, p, isMobile);
     }
 
     ctx.restore();

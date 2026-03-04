@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import content from '../config/content.json';
 import theme from '../config/theme.json';
 
 const ui = theme.colors.ui;
 const connectData = content.connectButton ?? { label: "Let's Connect", links: [] };
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+}
+
 export default function ConnectButton({ onCtaClick, onConnectOpened }) {
   const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
+  const topOffset = isMobile ? 120 : 10;
 
   return (
-    <div style={{ position: 'fixed', top: 10, right: 12, zIndex: 900, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
+    <div style={{ position: 'fixed', top: topOffset, right: 12, zIndex: 900, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
       <button
         onClick={() => {
           setOpen(prev => {

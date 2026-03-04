@@ -4,7 +4,7 @@ import content from '../config/content.json';
 const WORLD_HEIGHT = themeVis.world?.height ?? 2400;
 const MAX_DEPTH_FEET = 120;
 
-export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize) {
+export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, isMobile = false) {
   const p = pixelSize ?? themeVis.pixelSize;
   const ui = themeVis.colors.ui;
 
@@ -64,8 +64,8 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize) {
   const pillW = Math.max(zoneLabelW, flavorW) + 32;
   const pillH = collapsedH + (expandedH - collapsedH) * expandT;
 
-  // Slide: pill starts fully above screen (pillH above y=0), slides to y=10
-  const targetY = 10;
+  // Slide: pill starts fully above screen (pillH above y=0), slides to targetY. On mobile, lower so it doesn't overlay counters/buttons.
+  const targetY = isMobile ? 76 : 10;
   const pillY = targetY - (1 - slideT) * (collapsedH + 12);
   const pillX = viewportWidth / 2 - pillW / 2;
 
