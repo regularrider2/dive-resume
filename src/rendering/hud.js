@@ -9,12 +9,17 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   const ui = themeVis.colors.ui;
 
   // === DISCOVERED COUNTER (top-left) ===
-  const fontSize = Math.max(14, p * 7);
+  const fontSize = Math.max(isMobile ? 12 : 14, p * 7);
   const pillH = fontSize + 14;
   ctx.font = `bold ${fontSize}px monospace`;
   ctx.textAlign = 'left';
-  const discText = `Discovered: ${state.discoveredItems?.size ?? 0} / ${state.totalItems ?? 0}`;
-  const discW = ctx.measureText(discText).width + 20;
+  let discText = `Discovered: ${state.discoveredItems?.size ?? 0} / ${state.totalItems ?? 0}`;
+  let discW = ctx.measureText(discText).width + 20;
+  const maxDiscW = isMobile ? Math.floor(viewportWidth * 0.42) : Infinity;
+  if (discW > maxDiscW && maxDiscW < Infinity) {
+    discText = `${state.discoveredItems?.size ?? 0}/${state.totalItems ?? 0}`;
+    discW = Math.min(ctx.measureText(discText).width + 20, maxDiscW);
+  }
   ctx.fillStyle = 'rgba(0,0,0,0.55)';
   ctx.beginPath();
   ctx.roundRect(8, 8, discW, pillH, 6);
@@ -64,7 +69,8 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
     flavorW = ctx.measureText(flavor).width;
   }
 
-  const maxPillW = isMobile ? Math.floor(viewportWidth * 0.36) : Infinity;
+  const depthAreaW = isMobile ? 88 : 0; // space for depth ticker + label on right
+  const maxPillW = isMobile ? Math.min(Math.floor(viewportWidth * 0.36), Math.max(80, viewportWidth - depthAreaW - 16)) : Infinity;
   const padding = isMobile ? 16 : 32;
   let pillW = Math.max(zoneLabelW, flavorW) + padding;
   if (isMobile && pillW > maxPillW) {
@@ -94,7 +100,8 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   // Slide: pill slides to targetY. Mobile: top-right, compact.
   const targetY = 10;
   const pillY = targetY - (1 - slideT) * (collapsedH + 12);
-  const pillX = isMobile ? viewportWidth - pillW - 8 : viewportWidth / 2 - pillW / 2;
+  // On mobile, keep zone pill left of depth ticker (depth uses rightmost 88px)
+  const pillX = isMobile ? Math.max(8, viewportWidth - depthAreaW - pillW - 8) : viewportWidth / 2 - pillW / 2;
 
   ctx.save();
   // Clip so pill can't draw above the canvas top during slide-in
@@ -157,7 +164,8 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   const tickerW = Math.max(10, p * 6);
   const tickerH = Math.round(viewportHeight * 0.6);
   const tickerTop = Math.round((viewportHeight - tickerH) / 2);
-  const tickerX = viewportWidth - tickerW - 60; // leave room for label to the left
+  const labelGap = isMobile ? 44 : 60; // leave room for depth label + zone pill on narrow screens
+  const tickerX = viewportWidth - tickerW - labelGap;
 
   // Background panel
   ctx.fillStyle = 'rgba(0,0,0,0.5)';

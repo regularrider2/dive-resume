@@ -178,7 +178,7 @@
     "label": "Let's Connect",
     "links": [
       { "label": "Email Me", "url": "mailto:dgordon2393@icloud.com", "type": "email" },
-      { "label": "LinkedIn", "url": "https://linkedin.com/in/david-gordon-a2200945", "type": "linkedin" },
+      { "label": "LinkedIn", "url": "https://www.linkedin.com/in/davidtgordon", "type": "linkedin" },
       { "label": "610-772-6451", "url": "tel:610-772-6451", "type": "phone" }
     ]
   },
@@ -193,7 +193,7 @@
     "message": "You've seen everything. Now let's talk about what I can do for you.",
     "ctaLinks": [
       { "label": "Email Me", "url": "mailto:dgordon2393@icloud.com", "type": "email" },
-      { "label": "LinkedIn", "url": "https://linkedin.com/in/david-gordon-a2200945", "type": "linkedin" },
+      { "label": "LinkedIn", "url": "https://www.linkedin.com/in/davidtgordon", "type": "linkedin" },
       { "label": "610-772-6451", "url": "tel:610-772-6451", "type": "phone" }
     ],
     "diveAgainLabel": "Dive Again",

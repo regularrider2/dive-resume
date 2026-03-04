@@ -449,6 +449,11 @@ export default function GameCanvas({
     const w = canvas.width;
     const h = canvas.height;
     const p = getPixelSize();
+    const isMobile = w < 768 || (typeof window !== 'undefined' && isTouchDevice());
+    // On mobile: cluster item x into center 50% of world (so they're on-screen; reef stays at edges)
+    const mobileClusterX = (worldX) => WORLD_WIDTH * 0.25 + (worldX / WORLD_WIDTH) * (WORLD_WIDTH * 0.5);
+    const mobilePlayerMinX = WORLD_WIDTH * 0.2;
+    const mobilePlayerMaxX = WORLD_WIDTH * 0.8;
 
     // Clear to a solid background so sky/water never show stale or undrawn bands
     ctx.fillStyle = '#1a3060';
@@ -504,7 +509,9 @@ export default function GameCanvas({
           normDy *= 0.2;
         }
         const speed = DIVER_SPEED * Math.min(mag, 1) * dt * (keys.shift ? 1.5 : 1);
-        const newX = Math.max(20, Math.min(WORLD_WIDTH - 20, state.playerX + normDx * speed));
+        const minX = isMobile ? mobilePlayerMinX : 20;
+        const maxX = isMobile ? mobilePlayerMaxX : WORLD_WIDTH - 20;
+        const newX = Math.max(minX, Math.min(maxX, state.playerX + normDx * speed));
         const newY = Math.max(0, Math.min(WORLD_HEIGHT - 50, state.playerY + normDy * speed));
         if (normDx !== 0) directionRef.current = normDx > 0 ? 1 : -1;
         onUpdatePlayer(newX, newY);
@@ -538,13 +545,16 @@ export default function GameCanvas({
         onDecompression('cancelAndReset');
       }
 
-      const items = getEnabledItems(content).map(item => ({
+      let items = getEnabledItems(content).map(item => ({
         ...item, discovered: state.discoveredItems.has(item.id),
       }));
-
-      const availableLobsters = !state.carryingLobster
+      let availableLobsters = !state.carryingLobster
         ? getLobsterItems(content).filter(l => !state.lobstersCollected.has(l.id))
         : [];
+      if (isMobile) {
+        items = items.map(it => ({ ...it, x: mobileClusterX(it.x) }));
+        availableLobsters = availableLobsters.map(l => ({ ...l, x: mobileClusterX(l.x) }));
+      }
       const allInteractables = [...items, ...availableLobsters];
 
       const nearest = findNearestInteractable(state.playerX, state.playerY, allInteractables.filter(it => !it.discovered && !state.lobstersCollected.has(it.id)), INTERACTION_RADIUS);
@@ -665,12 +675,10 @@ export default function GameCanvas({
 
     updateCreatures(creaturesRef.current, dt, WORLD_WIDTH);
 
-    // On mobile: full world width (no horizontal strip/cutoff), shorter vertical viewport only
-    const isMobile = w < 768 || (typeof window !== 'undefined' && isTouchDevice());
+    // On mobile: full world width so reef/coral and water fill left and right; items are clustered in center
     const viewportWidthWorld = WORLD_WIDTH;
     const scale = w / viewportWidthWorld;
-    let viewHeightWorld = h / scale;
-    if (isMobile) viewHeightWorld *= 0.62;
+    const viewHeightWorld = h / scale;
 
     const camera = updateCamera(cameraRef.current, state.playerX, state.playerY, viewportWidthWorld, viewHeightWorld);
 
@@ -682,8 +690,9 @@ export default function GameCanvas({
 
     drawBackground(ctx, camera.x, camera.y, viewportWidthWorld, viewHeightWorld, timestamp, p);
 
-    const visibleTop = camera.y - 80;
-    const visibleBottom = camera.y + viewHeightWorld + 80;
+    const visibleMargin = isMobile ? 140 : 80;
+    const visibleTop = camera.y - visibleMargin;
+    const visibleBottom = camera.y + viewHeightWorld + visibleMargin;
 
     // Trigger "Oh look, a shark!" when player first transitions into the Deep
     const currentZone = getCurrentZone(state.playerY, theme.zones);
@@ -744,7 +753,8 @@ export default function GameCanvas({
       const glowPhase = (timestamp % 2000) / 2000;
       const bobOffset = Math.sin(timestamp * 0.003) * 3;
 
-      const items = getEnabledItems(content);
+      let items = getEnabledItems(content);
+      if (isMobile) items = items.map(it => ({ ...it, x: mobileClusterX(it.x) }));
       for (const item of items) {
         if (item.y < visibleTop || item.y > visibleBottom) continue;
         const discovered = state.discoveredItems.has(item.id);
@@ -794,7 +804,8 @@ export default function GameCanvas({
         }
       }
 
-      const lobsterItems = getLobsterItems(content);
+      let lobsterItems = getLobsterItems(content);
+      if (isMobile) lobsterItems = lobsterItems.map(l => ({ ...l, x: mobileClusterX(l.x) }));
       for (const lob of lobsterItems) {
         if (lob.y < visibleTop || lob.y > visibleBottom) continue;
         if (state.lobstersCollected.has(lob.id)) continue;
@@ -992,30 +1003,63 @@ export default function GameCanvas({
     rafRef.current = requestAnimationFrame(gameLoop);
   }, [onDiscover, onOpenDialog, onCloseDialog, onZoneChange, onDecompression, onUpdateDecompression, onUpdatePlayer, onPlayEffect, onUpdateNearby, onPickupLobster, onOpenNPCChat, npcChatOpen]);
 
+  const wrapperRef = useRef(null);
   useEffect(() => {
     const canvas = canvasRef.current;
+    const wrapper = wrapperRef.current;
     if (!canvas) return;
     const resize = () => {
       const vw = window.visualViewport?.width ?? window.innerWidth;
       const vh = window.visualViewport?.height ?? window.innerHeight;
+      const voffX = window.visualViewport?.offsetLeft ?? 0;
+      const voffY = window.visualViewport?.offsetTop ?? 0;
       canvas.width = vw;
       canvas.height = vh;
+      if (wrapper) {
+        wrapper.style.width = vw + 'px';
+        wrapper.style.height = vh + 'px';
+        wrapper.style.left = voffX + 'px';
+        wrapper.style.top = voffY + 'px';
+      }
     };
     resize();
     window.addEventListener('resize', resize);
-    window.visualViewport?.addEventListener('resize', resize);
+    const vp = window.visualViewport;
+    if (vp) {
+      vp.addEventListener('resize', resize);
+      vp.addEventListener('scroll', resize);
+    }
     initInput();
     if (isTouchDevice()) initTouchInput(canvas);
     rafRef.current = requestAnimationFrame(gameLoop);
     return () => {
       window.removeEventListener('resize', resize);
-      window.visualViewport?.removeEventListener('resize', resize);
+      if (vp) {
+        vp.removeEventListener('resize', resize);
+        vp.removeEventListener('scroll', resize);
+      }
       destroyInput(); destroyTouchInput();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [gameLoop]);
 
   return (
-    <canvas ref={canvasRef} style={{ display: 'block', width: '100vw', height: '100vh', imageRendering: 'pixelated' }} />
+    <div
+      ref={wrapperRef}
+      style={{
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        pointerEvents: 'none',
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{ display: 'block', width: '100%', height: '100%', imageRendering: 'pixelated', pointerEvents: 'auto' }}
+      />
+    </div>
   );
 }
