@@ -176,14 +176,14 @@ function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p) {
     if (side === 'left') {
       ctx.fillRect(0, worldY, e.w, step + 1);
     } else {
-      ctx.fillRect(worldViewWidth - e.w, worldY, e.w, step + 1);
+      ctx.fillRect(WORLD_WIDTH - e.w, worldY, e.w, step + 1);
     }
 
     ctx.fillStyle = rockDark;
     if (side === 'left') {
       ctx.fillRect(e.w - 2 * p, worldY, 2 * p, step + 1);
     } else {
-      ctx.fillRect(worldViewWidth - e.w, worldY, 2 * p, step + 1);
+      ctx.fillRect(WORLD_WIDTH - e.w, worldY, 2 * p, step + 1);
     }
 
     if (r > 0.5) {
@@ -192,7 +192,7 @@ function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p) {
       if (side === 'left') {
         ctx.fillRect(e.w - crackW, worldY + step * 0.5, crackW, p);
       } else {
-        ctx.fillRect(worldViewWidth - e.w, worldY + step * 0.5, crackW, p);
+        ctx.fillRect(WORLD_WIDTH - e.w, worldY + step * 0.5, crackW, p);
       }
     }
 
@@ -200,7 +200,7 @@ function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p) {
       const ci = Math.floor(e.ledgeSeed * coralColors.length);
       const ci2 = (ci + 1) % coralColors.length;
       const dir = side === 'left' ? 1 : -1;
-      const edgeX = side === 'left' ? e.w : worldViewWidth - e.w;
+      const edgeX = side === 'left' ? e.w : WORLD_WIDTH - e.w;
       const baseY = worldY + step * 0.5;
       const fanW = (8 + e.ledgeSeed * 10) * p;
       const fingers = 3 + Math.floor(e.ledgeSeed * 3);
@@ -234,9 +234,9 @@ function drawReefWall(ctx, cameraY, worldViewWidth, worldViewHeight, side, p) {
         ctx.fillStyle = rockDark;
         ctx.fillRect(e.w - 2 * p, worldY + ledgeH, ledgeW, p);
       } else {
-        ctx.fillRect(worldViewWidth - e.w - ledgeW + 2 * p, worldY, ledgeW, ledgeH);
+        ctx.fillRect(WORLD_WIDTH - e.w - ledgeW + 2 * p, worldY, ledgeW, ledgeH);
         ctx.fillStyle = rockDark;
-        ctx.fillRect(worldViewWidth - e.w - ledgeW + 2 * p, worldY + ledgeH, ledgeW, p);
+        ctx.fillRect(WORLD_WIDTH - e.w - ledgeW + 2 * p, worldY + ledgeH, ledgeW, p);
       }
     }
   }
@@ -564,7 +564,7 @@ function drawOceanFloor(ctx, worldViewWidth, p) {
   const rockDark = '#3a3a3a';
 
   ctx.fillStyle = sandMain;
-  ctx.fillRect(0, floorY, worldViewWidth, WORLD_HEIGHT - floorY + 100);
+  ctx.fillRect(0, floorY, WORLD_WIDTH, WORLD_HEIGHT - floorY + 100);
 
   ctx.fillStyle = sandLight;
   for (let x = 0; x < WORLD_WIDTH; x += 40) {
@@ -601,7 +601,7 @@ export function drawBackground(ctx, cameraX, cameraY, worldViewWidth, worldViewH
   const water = theme.colors.water ?? {};
   const surfaceStart = zones.find(z => z.id === 'surface')?.startY ?? 0;
 
-  // Sky: cover full visible range when camera is above world (cameraY < 0) to avoid jagged/unpainted band
+  // Sky: cover full world width; extend up if camera is above world
   const skyTop = Math.min(0, cameraY);
   const skyHeight = surfaceStart - skyTop;
   const grad = ctx.createLinearGradient(0, skyTop, 0, surfaceStart);
@@ -609,7 +609,7 @@ export function drawBackground(ctx, cameraX, cameraY, worldViewWidth, worldViewH
   grad.addColorStop(0.6, '#87CEEB');
   grad.addColorStop(1, '#b8dff0');
   ctx.fillStyle = grad;
-  ctx.fillRect(0, skyTop, worldViewWidth, skyHeight);
+  ctx.fillRect(0, skyTop, WORLD_WIDTH, skyHeight);
 
   // Clouds in world space (fixed world y as fraction of surface)
   for (const cloud of CLOUD_POSITIONS) {
@@ -620,11 +620,11 @@ export function drawBackground(ctx, cameraX, cameraY, worldViewWidth, worldViewH
 
   // Water line at surface
   ctx.fillStyle = '#1a6a8a';
-  ctx.fillRect(0, surfaceStart, worldViewWidth, 2 * p);
+  ctx.fillRect(0, surfaceStart, WORLD_WIDTH, 2 * p);
   ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  ctx.fillRect(0, surfaceStart - p, worldViewWidth, p);
+  ctx.fillRect(0, surfaceStart - p, WORLD_WIDTH, p);
   ctx.fillStyle = 'rgba(255,255,255,0.15)';
-  for (let wx = 0; wx < worldViewWidth; wx += 30) {
+  for (let wx = 0; wx < WORLD_WIDTH; wx += 30) {
     const waveY = Math.sin(time * 0.003 + wx * 0.05) * 2;
     ctx.fillRect(wx, surfaceStart - 2 * p + waveY, 15, p);
   }
@@ -635,11 +635,11 @@ export function drawBackground(ctx, cameraX, cameraY, worldViewWidth, worldViewH
     const color = water[z.id];
     if (!color) continue;
     ctx.fillStyle = color;
-    ctx.fillRect(0, z.startY, worldViewWidth, z.endY - z.startY);
+    ctx.fillRect(0, z.startY, WORLD_WIDTH, z.endY - z.startY);
     if (i < zones.length - 1) {
       const nextColor = water[zones[i + 1].id];
       ctx.fillStyle = brightenColor(nextColor || color, 0.18);
-      ctx.fillRect(0, z.endY - p, worldViewWidth, 2 * p);
+      ctx.fillRect(0, z.endY - p, WORLD_WIDTH, 2 * p);
     }
   }
 
@@ -651,7 +651,7 @@ export function drawBackground(ctx, cameraX, cameraY, worldViewWidth, worldViewH
       ctx.save();
       ctx.globalAlpha = rayAlpha;
       for (let i = 0; i < 5; i++) {
-        const rx = (i / 5) * worldViewWidth + Math.sin(time * 0.0006 + i * 1.8) * 20;
+        const rx = (i / 5) * WORLD_WIDTH + Math.sin(time * 0.0006 + i * 1.8) * 20;
         const grad = ctx.createLinearGradient(rx, Math.max(0, surfaceStart), rx + 25, surfaceStart + worldViewHeight * 0.45);
         grad.addColorStop(0, 'rgba(255,255,220,0.12)');
         grad.addColorStop(1, 'rgba(255,255,220,0)');
@@ -704,7 +704,7 @@ export function drawBackground(ctx, cameraX, cameraY, worldViewWidth, worldViewH
     const alpha = factor * 0.1 + trenchFactor * 0.18;
     if (alpha > 0) {
       ctx.fillStyle = `rgba(0,0,10,${alpha})`;
-      ctx.fillRect(0, 0, worldViewWidth, worldViewHeight);
+      ctx.fillRect(cameraX, cameraY, worldViewWidth, worldViewHeight);
     }
   }
 }
