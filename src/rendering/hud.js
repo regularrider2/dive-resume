@@ -64,10 +64,10 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   const pillW = Math.max(zoneLabelW, flavorW) + 32;
   const pillH = collapsedH + (expandedH - collapsedH) * expandT;
 
-  // Slide: pill starts fully above screen (pillH above y=0), slides to targetY. On mobile, lower so it doesn't overlay counters/buttons.
-  const targetY = isMobile ? 76 : 10;
+  // Slide: pill starts fully above screen (pillH above y=0), slides to targetY. On mobile, top-right; desktop top-center.
+  const targetY = 10;
   const pillY = targetY - (1 - slideT) * (collapsedH + 12);
-  const pillX = viewportWidth / 2 - pillW / 2;
+  const pillX = isMobile ? viewportWidth - pillW - 12 : viewportWidth / 2 - pillW / 2;
 
   ctx.save();
   // Clip so pill can't draw above the canvas top during slide-in
@@ -103,18 +103,19 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
     ctx.stroke();
   }
 
-  // Zone label
+  // Zone label (center of pill: pillX + pillW/2 for mobile right-aligned pill)
+  const zoneTextX = isMobile ? pillX + pillW / 2 : viewportWidth / 2;
   ctx.font = `bold ${zoneFontSize}px monospace`;
   ctx.fillStyle = ui.title;
   ctx.textBaseline = 'top';
-  ctx.fillText(zoneLabel, viewportWidth / 2, pillY + 8);
+  ctx.fillText(zoneLabel, zoneTextX, pillY + 8);
 
   // Flavor subtitle — fades in with expandT
   if (flavor && expandT > 0.05) {
     ctx.globalAlpha = expandT;
     ctx.font = `italic ${flavorFontSize}px monospace`;
     ctx.fillStyle = 'rgba(160,210,255,0.92)';
-    ctx.fillText(flavor, viewportWidth / 2, pillY + 8 + zoneFontSize + 6);
+    ctx.fillText(flavor, zoneTextX, pillY + 8 + zoneFontSize + 6);
   }
 
   ctx.textBaseline = 'alphabetic';

@@ -667,7 +667,7 @@ export default function GameCanvas({
 
     // On mobile: zoom in slightly (smaller viewport in world units) so it doesn't feel zoomed out; desktop unchanged
     const isMobile = w < 768 || (typeof window !== 'undefined' && isTouchDevice());
-    const viewportWidthWorld = isMobile ? WORLD_WIDTH * 0.72 : WORLD_WIDTH;
+    const viewportWidthWorld = isMobile ? WORLD_WIDTH * 0.52 : WORLD_WIDTH;
     const scale = w / viewportWidthWorld;
     const viewHeightWorld = h / scale;
 
