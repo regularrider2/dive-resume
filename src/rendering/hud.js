@@ -35,11 +35,11 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
     ctx.fillText(lobText, 18, lobY + fontSize + 2);
   }
 
-  // === ZONE LABEL (top-center) — slides in/out, expands to reveal flavor ===
+  // === ZONE LABEL (top-center desktop; top-right mobile, smaller) ===
   const zone = content.zones?.find(z => z.id === state.currentZone);
   const zoneLabel = zone?.label ?? state.currentZone ?? '';
-  const zoneFontSize = Math.max(16, p * 8);
-  const flavorFontSize = Math.max(11, p * 5);
+  const zoneFontSize = isMobile ? 11 : Math.max(16, p * 8);
+  const flavorFontSize = isMobile ? 9 : Math.max(11, p * 5);
   ctx.textAlign = 'center';
 
   const anno = state.zoneAnnouncement;
@@ -47,27 +47,50 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   const slideT = hasAnno ? (anno.slideT ?? 1) : 1;   // 0=hidden above, 1=in view
   const expandT = hasAnno ? (anno.expandT ?? 0) : 0; // 0=label-only, 1=with flavor
 
-  // Measure both rows
+  // Measure both rows (mobile: cap pill to top-right corner)
   ctx.font = `bold ${zoneFontSize}px monospace`;
-  const zoneLabelW = ctx.measureText(zoneLabel).width;
+  let displayZoneLabel = zoneLabel;
+  let zoneLabelW = ctx.measureText(zoneLabel).width;
 
   const flavor = anno?.flavor ?? zone?.flavor ?? null;
+  let displayFlavor = flavor ?? null;
   let flavorW = 0;
   if (flavor) {
     ctx.font = `italic ${flavorFontSize}px monospace`;
     flavorW = ctx.measureText(flavor).width;
   }
 
-  // Pill dimensions — width expands slightly, height grows with expandT
-  const collapsedH = zoneFontSize + 16;
-  const expandedH  = collapsedH + (flavorFontSize + 10) * (flavor ? 1 : 0);
-  const pillW = Math.max(zoneLabelW, flavorW) + 32;
+  const maxPillW = isMobile ? Math.floor(viewportWidth * 0.36) : Infinity;
+  const padding = isMobile ? 16 : 32;
+  let pillW = Math.max(zoneLabelW, flavorW) + padding;
+  if (isMobile && pillW > maxPillW) {
+    pillW = maxPillW;
+    // Truncate zone label with ellipsis to fit
+    const maxLabelW = maxPillW - padding;
+    if (zoneLabelW > maxLabelW) {
+      for (let n = zoneLabel.length; n > 0; n--) {
+        displayZoneLabel = zoneLabel.slice(0, n) + '…';
+        if (ctx.measureText(displayZoneLabel).width <= maxLabelW) break;
+      }
+      zoneLabelW = ctx.measureText(displayZoneLabel).width;
+    }
+    if (flavor && flavorW > maxLabelW) {
+      for (let n = flavor.length; n > 0; n--) {
+        displayFlavor = flavor.slice(0, n) + '…';
+        if (ctx.measureText(displayFlavor).width <= maxLabelW) break;
+      }
+    }
+  }
+
+  // Pill dimensions — height grows with expandT
+  const collapsedH = zoneFontSize + (isMobile ? 10 : 16);
+  const expandedH  = collapsedH + (flavorFontSize + (isMobile ? 6 : 10)) * (flavor ? 1 : 0);
   const pillH = collapsedH + (expandedH - collapsedH) * expandT;
 
-  // Slide: pill starts fully above screen (pillH above y=0), slides to targetY. On mobile, top-right; desktop top-center.
+  // Slide: pill slides to targetY. Mobile: top-right, compact.
   const targetY = 10;
   const pillY = targetY - (1 - slideT) * (collapsedH + 12);
-  const pillX = isMobile ? viewportWidth - pillW - 12 : viewportWidth / 2 - pillW / 2;
+  const pillX = isMobile ? viewportWidth - pillW - 8 : viewportWidth / 2 - pillW / 2;
 
   ctx.save();
   // Clip so pill can't draw above the canvas top during slide-in
@@ -103,19 +126,21 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
     ctx.stroke();
   }
 
-  // Zone label (center of pill: pillX + pillW/2 for mobile right-aligned pill)
-  const zoneTextX = isMobile ? pillX + pillW / 2 : viewportWidth / 2;
+  // Zone label (center of pill)
+  const zoneTextX = pillX + pillW / 2;
+  const labelTopPad = isMobile ? 6 : 8;
+  const labelGap = isMobile ? 4 : 6;
   ctx.font = `bold ${zoneFontSize}px monospace`;
   ctx.fillStyle = ui.title;
   ctx.textBaseline = 'top';
-  ctx.fillText(zoneLabel, zoneTextX, pillY + 8);
+  ctx.fillText(displayZoneLabel, zoneTextX, pillY + labelTopPad);
 
   // Flavor subtitle — fades in with expandT
   if (flavor && expandT > 0.05) {
     ctx.globalAlpha = expandT;
     ctx.font = `italic ${flavorFontSize}px monospace`;
     ctx.fillStyle = 'rgba(160,210,255,0.92)';
-    ctx.fillText(flavor, zoneTextX, pillY + 8 + zoneFontSize + 6);
+    ctx.fillText(displayFlavor ?? flavor, zoneTextX, pillY + labelTopPad + zoneFontSize + labelGap);
   }
 
   ctx.textBaseline = 'alphabetic';
