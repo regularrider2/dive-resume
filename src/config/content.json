@@ -2,7 +2,7 @@
   "meta": {
     "title": "DEEP DIVE: DAVID GORDON",
     "subtitle": "An underwater interactive resume. Discover treasures to learn about my career, projects, and how I think.",
-    "resumePageUrl": "/resume.pdf"
+    "resumePageUrl": "https://tpkhuaacsdbogjymxqve.supabase.co/storage/v1/object/public/resume/David_Resume.pdf"
   },
   "startScreen": {
     "instructions": [

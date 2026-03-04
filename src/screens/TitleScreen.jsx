@@ -231,21 +231,8 @@ export default function TitleOverlay({ onStart, onCtaClick }) {
       drawDiver(dctx, diverX - 56, diverY - 28, diverDir, diverFrame, 2);
       dctx.restore();
 
-      // Rotating speech bubble above diver
-      const DIVER_QUIPS = [
-        '🤿 Hi! I\'m looking for David\'s career.',
-        '🤿 Apparently he shipped AI to tens of millions of people.',
-        '🤿 Find the lobster. Bring it back.',
-        '🤿 Deeper = more interesting.',
-        '🤿 Something about squirrels and crows? Let\'s find out.',
-      ];
-      const QUIP_CYCLE = 3500;
-      const quipIdx = Math.floor(ts / QUIP_CYCLE) % DIVER_QUIPS.length;
-      const quipPhase = (ts % QUIP_CYCLE) / QUIP_CYCLE;
-      const quipAlpha = quipPhase < 0.08 ? quipPhase / 0.08
-                      : quipPhase > 0.85 ? (1 - quipPhase) / 0.15
-                      : 1;
-      const quip = DIVER_QUIPS[quipIdx];
+      // Single speech bubble above diver
+      const quip = '🤿 I hear this David guy is super interesting.';
       const qFontSize = 12;
       dctx.font = `bold ${qFontSize}px monospace`;
       const qTw = dctx.measureText(quip).width;
@@ -255,7 +242,7 @@ export default function TitleOverlay({ onStart, onCtaClick }) {
       const qX = diverX - qW / 2;
       const qY = diverY - 48 - qH;
       dctx.save();
-      dctx.globalAlpha = quipAlpha * 0.92;
+      dctx.globalAlpha = 0.92;
       dctx.fillStyle = 'rgba(255,255,255,0.95)';
       dctx.beginPath();
       if (typeof dctx.roundRect === 'function') {

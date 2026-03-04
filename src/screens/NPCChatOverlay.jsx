@@ -2,18 +2,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import { askNPCDiver } from '../engine/npcChat.js';
 
 const SUGGESTED_QUESTIONS = [
-  "What did he build at Amazon?",
-  "What photography award did he win?",
+  "What did David build at Amazon?",
+  "What photography award did David win?",
 ];
 
 const BROKE_JOKE = "And that's it. I'd keep going but David is funding this on vibes and a free-tier API key. The tokens are gone. The wisdom lives on. Swim along.";
 
-// Enforce 1–2 sentences max for Ghost Diver (backend sometimes ignores prompt)
-function truncateToTwoSentences(text) {
+// Enforce 1–3 sentences max for Ghost Diver (backend sometimes ignores prompt)
+function truncateToSentences(text, maxSentences = 3) {
   if (!text || typeof text !== 'string') return text;
   const trimmed = text.trim();
   const sentences = trimmed.split(/(?<=[.!?])\s+/).filter(s => s.trim());
-  const kept = sentences.slice(0, 2).join(' ').trim();
+  const kept = sentences.slice(0, maxSentences).join(' ').trim();
   return kept || trimmed;
 }
 
@@ -73,14 +73,20 @@ function TokenPips({ used, total }) {
   );
 }
 
-export default function NPCChatOverlay({ onClose, questionsUsed = 0, questionLimit = 3, onQuestionAsked, onGhostDiverExchange }) {
+const getGreeting = (remaining) =>
+  `I used to be a product manager too, until I failed to do my safety stop. Now I'm whatever this is. You've got ${remaining} questions about me, I mean David. I know his career suspiciously well.`;
+
+export default function NPCChatOverlay({ onClose, questionsUsed = 0, questionLimit = 3, onQuestionAsked, onGhostDiverExchange, messages: persistedMessages = null, setMessages: setPersistedMessages = null }) {
   const remaining = questionLimit - questionsUsed;
-  const [messages, setMessages] = useState([
-    {
-      role: 'assistant',
-      content: `I used to be a product manager too, until I failed to do my safety stop. Now I'm whatever this is. You've got ${remaining} questions about me, I mean David. I know his career suspiciously well.`,
-    },
+  const isControlled = persistedMessages != null && setPersistedMessages != null;
+  const [localMessages, setLocalMessages] = useState([
+    { role: 'assistant', content: getGreeting(remaining) },
   ]);
+  const messages = isControlled ? persistedMessages : localMessages;
+  const setMessages = isControlled ? setPersistedMessages : setLocalMessages;
+  const displayMessages = isControlled && persistedMessages.length === 0
+    ? [{ role: 'assistant', content: getGreeting(remaining) }]
+    : messages;
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [localUsed, setLocalUsed] = useState(questionsUsed);
@@ -89,7 +95,7 @@ export default function NPCChatOverlay({ onClose, questionsUsed = 0, questionLim
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, loading]);
+  }, [displayMessages, loading]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -110,9 +116,9 @@ export default function NPCChatOverlay({ onClose, questionsUsed = 0, questionLim
     setMessages(prev => [...prev, { role: 'user', content: question }]);
     setLoading(true);
 
-    const history = messages.map(m => ({ role: m.role, content: m.content }));
-    let answer = await askNPCDiver(question, history);
-    answer = truncateToTwoSentences(answer);
+    const historyForApi = [...messages.map(m => ({ role: m.role, content: m.content })), { role: 'user', content: question }];
+    let answer = await askNPCDiver(question, historyForApi);
+    answer = truncateToSentences(answer);
 
     onGhostDiverExchange?.(question, answer);
 
@@ -209,7 +215,7 @@ export default function NPCChatOverlay({ onClose, questionsUsed = 0, questionLim
             scrollbarWidth: 'thin',
             scrollbarColor: 'rgba(200,160,32,0.15) transparent',
           }}>
-            {messages.map((msg, i) => (
+            {displayMessages.map((msg, i) => (
               <div
                 key={i}
                 style={{
@@ -281,7 +287,7 @@ export default function NPCChatOverlay({ onClose, questionsUsed = 0, questionLim
           </div>
 
           {/* ── Suggested questions ── */}
-          {messages.length === 1 && !exhausted && (
+          {displayMessages.length === 1 && !exhausted && (
             <div style={{
               padding: '4px 18px 12px',
               display: 'flex', flexWrap: 'wrap', gap: 7,

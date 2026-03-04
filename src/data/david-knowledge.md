@@ -39,7 +39,7 @@ University of Pennsylvania, Class of 2016. Economics degree.
 
 **Ring SVS funnel — ** Moments required Ring subscription with Smart Video Search (SVS) enabled. Many customers had no subscription or SVS off in the Ring app. David wrote the PRD and built two QR-code flows: one to ring.com to upgrade, one deep-linking into the Ring app settings. Chose QR codes over on-device flows to ship on time; aligned with Ring on on-device replacement for 2026.
 
-**Tell Me When / Missed Habits — automations platform:** Both features needed one-off, natural-language automations; the legacy routines platform only supported recurring automations. David wrote the BRD and worked cross-team with the routines PM to scope one-off automations as a new platform capability. Defined minimal management UX (sentence description + delete). Both features launched with one-off support.
+**Tell Me When / Missed Habits — automations platform:** Both features needed one-off, natural-language automations; the legacy routines platform only supported recurring automations. Defined minimal management UX (sentence description + delete). Both features launched with one-off support.
 
 **Missed Habits launch unblock:** UX leadership blocked launch over duplication with Reminders. David used AI to build Echo Show mocks showing Missed Habits integrated with Reminders long-term; presented to UX and Reminders team. Secured alignment for 2026 integration. Short-term: settings toggle so customers could turn it off, limited launch to Madeline and Electra to contain blast radius. UX unblocked the launch.
 
@@ -86,7 +86,7 @@ Next opportunity to build AI-powered products at scale. Technical product manage
 
 ## Personal
 
-- Delhi: three-legged dog, rescued by his wife off the side of the road in India in 2017. Loves adventure.
+- Delhi: three-legged dog (male). David's wife rescued him off the side of the road in India in 2017. Loves adventure.
 - SSI-certified scuba diver; loves lobstering.
 - Award-winning wildlife, nature, and astrophotography photographer (1st place, Sailfish Point Country Club nature photography competition).
 - Penn Class of 2016, Economics.

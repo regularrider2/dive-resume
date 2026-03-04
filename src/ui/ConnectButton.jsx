@@ -31,6 +31,7 @@ export default function ConnectButton({ onCtaClick, onConnectOpened }) {
           letterSpacing: 0.5,
         }}
       >
+        <span style={{ marginRight: 6 }}>👋</span>
         {connectData.label}
       </button>
       <a
@@ -41,7 +42,7 @@ export default function ConnectButton({ onCtaClick, onConnectOpened }) {
         style={{
           padding: '8px 16px',
           fontFamily: 'monospace',
-          fontSize: 13,
+          fontSize: 14,
           fontWeight: 'bold',
           color: ui.title,
           background: 'rgba(0,20,50,0.8)',
@@ -54,6 +55,7 @@ export default function ConnectButton({ onCtaClick, onConnectOpened }) {
           display: 'block',
         }}
       >
+        <span style={{ marginRight: 6 }}>📄</span>
         View Resume
       </a>
 

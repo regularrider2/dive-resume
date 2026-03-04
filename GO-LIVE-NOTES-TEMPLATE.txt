@@ -14,6 +14,9 @@ Photo Gallery 1 =
 Photo Gallery 2 =
 Photo Gallery 3 =
 
+# Resume bucket (Step 1.5)
+Resume filename =
+
 # --- .ENV (use Supabase Project URL and Publishable Key above) ---
 
 # --- GITHUB ---

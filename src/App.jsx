@@ -35,6 +35,7 @@ export default function App() {
   const [npcChatOpen, setNpcChatOpen] = useState(false);
   const [npcChatted, setNpcChatted] = useState(false);
   const [npcQuestionsUsed, setNpcQuestionsUsed] = useState(0);
+  const [npcChatMessages, setNpcChatMessages] = useState([]); // persists for session until reload
   const NPC_QUESTION_LIMIT = 3;
   const audioRef = useRef(null);
   const trackerRef = useRef(null);
@@ -553,6 +554,8 @@ export default function App() {
           questionLimit={NPC_QUESTION_LIMIT}
           onQuestionAsked={() => setNpcQuestionsUsed(n => n + 1)}
           onGhostDiverExchange={(question, answer) => trackGhostDiverChat(trackerRef.current, question, answer)}
+          messages={npcChatMessages}
+          setMessages={setNpcChatMessages}
         />
       )}
     </div>

@@ -8,7 +8,7 @@ Follow these steps in order. Check off each step when done. Every step has a tim
 
 | Part | What | Time |
 |------|------|------|
-| 1 | Supabase (account, table, photos) | ~16 min |
+| 1 | Supabase (account, table, photos, resume bucket) | ~18 min |
 | 2 | .env file + resume PDF | ~3 min |
 | 3 | AI updates content.json (you send URL + filenames) | ~1 min |
 | 4 | GitHub (if needed) | ~5 min |
@@ -18,7 +18,7 @@ Follow these steps in order. Check off each step when done. Every step has a tim
 
 ---
 
-## Part 1: Supabase (analytics + photo storage) — ~16 min total
+## Part 1: Supabase (analytics + photo storage + resume) — ~18 min total
 
 ### Step 1.1 — Create a Supabase account and project — ~5 min
 
@@ -91,6 +91,27 @@ CREATE POLICY "Allow anonymous inserts"
 
 ---
 
+### Step 1.5 — Create the resume bucket and upload your PDF — ~2 min
+
+The **View Resume** link (title screen, Let’s Connect, completion overlay) opens your resume. Storing it in Supabase means you can update the PDF anytime without redeploying.
+
+1. In the left sidebar, click **Storage** (same place as the photos bucket).
+2. Click **New bucket**.
+3. Name it exactly: **resume**
+4. Turn **Public bucket** ON (so the link can open the PDF).
+5. Click **Create bucket**.
+6. Click into the **resume** bucket, then **Upload file** (or drag and drop).
+7. Upload your resume PDF (e.g. `resume.pdf` or `david-gordon-resume.pdf`).
+8. Note the **exact filename** (e.g. `resume.pdf`). When you do Part 3, send this to the AI so it can set `resumePageUrl` in `content.json` to your Supabase URL.
+
+Your resume URL will look like:  
+`https://YOUR_PROJECT_ID.supabase.co/storage/v1/object/public/resume/resume.pdf`  
+(Replace `YOUR_PROJECT_ID` with your Supabase project ID and `resume.pdf` with whatever you named the file.)
+
+- [ ] Done. My resume filename: _____________________
+
+---
+
 ## Part 2: Create your `.env` file (local only) — ~2 min
 
 ### Step 2.1 — Copy the template and add your values — ~2 min
@@ -108,16 +129,13 @@ CREATE POLICY "Allow anonymous inserts"
 
 ---
 
-### Step 2.2 — Add your resume PDF so “View Resume” works — ~1 min
+### Step 2.2 — Resume URL in content.json — ~0 min (done in Part 3)
 
-The **View Resume** link appears in three places: the title screen, the “Let’s Connect” dropdown, and the completion overlay. They all use `content.meta.resumePageUrl`, which is set to **`/resume.pdf`** in `content.json`.
+**View Resume** uses `content.meta.resumePageUrl` in `content.json`. If you uploaded your resume to Supabase in Step 1.5, include your **resume filename** (e.g. `resume.pdf`) when you send your details in Part 3 — the AI will set `resumePageUrl` to your Supabase URL so the link opens the PDF.
 
-1. Put your resume PDF in the project as **`public/resume.pdf`** (create the `public` folder if it doesn’t exist).
-2. After you deploy, the link will open your PDF in a new tab (e.g. `https://yoursite.vercel.app/resume.pdf`).
+If you skipped Step 1.5 and want to use a different URL (e.g. a link from Google Drive or your own site), set **`resumePageUrl`** in `src/config/content.json` to that full URL.
 
-If you prefer to host the PDF elsewhere (e.g. Supabase Storage or another URL), change **`resumePageUrl`** in `src/config/content.json` to that full URL (e.g. `"https://xxxx.supabase.co/storage/v1/object/public/resume/david-gordon-resume.pdf"`).
-
-- [ ] Done
+- [ ] Done (or will set in Part 3)
 
 ---
 
@@ -129,13 +147,14 @@ You need the game to use your real photo URLs. The AI can update `content.json` 
 
 1. Your **Supabase project URL** (e.g. `https://xxxxxxxx.supabase.co`) — this is safe to paste; it’s public.
 2. The **exact filenames** you uploaded to the `photos` bucket (e.g. `delhi.jpg`, `photo1.jpg`, `photo2.jpg`, `photo3.jpg`).
-3. Optional: captions for Delhi and each gallery photo. If you don’t care, say “no captions.”
+3. Your **resume filename** from the `resume` bucket (e.g. `resume.pdf`), so the AI can set `resumePageUrl` and the View Resume link works.
+4. Optional: captions for Delhi and each gallery photo. If you don’t care, say “no captions.”
 
 Example message:
 
-> My Supabase URL is https://abcdefgh.supabase.co. I uploaded delhi.jpg, photo1.jpg, photo2.jpg, photo3.jpg. No captions needed.
+> My Supabase URL is https://abcdefgh.supabase.co. Photos: delhi.jpg, photo1.jpg, photo2.jpg, photo3.jpg. Resume: resume.pdf. No captions needed.
 
-The AI will update `src/config/content.json` so the game loads those images. You do **not** need to paste your anon key.
+The AI will update `src/config/content.json` (photo URLs and `resumePageUrl`). You do **not** need to paste your anon key.
 
 - [ ] Done (after you get the updated content back)
 
