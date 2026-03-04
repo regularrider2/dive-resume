@@ -24,6 +24,7 @@ const SWIM_SOUND_INTERVAL = 400;
 
 function getPixelSize() {
   const base = theme.pixelSize ?? 3;
+  if (typeof window !== 'undefined' && window.innerWidth < 768 && ('ontouchstart' in window)) return 1.25;
   if (typeof window !== 'undefined' && window.innerWidth < 500) return Math.max(1, base - 1);
   return base;
 }
