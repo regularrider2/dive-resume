@@ -398,17 +398,8 @@ const NPC_DIVER_X_DESKTOP = Math.round((theme.world?.width ?? 800) * 0.28);
 const NPC_DIVER_X_MOBILE = Math.round((theme.world?.width ?? 800) * 0.38);
 const NPC_DIVER_Y = Math.round((59 / 130) * (theme.world?.height ?? 2000)); // 59 ft depth
 
-const NPC_QUIPS = [
-  '👻 I know his whole career. Ask me anything.',
-  '👻 I\'ve been down here a while. Come say hi.',
-];
-
-const NPC_EXHAUSTED_QUIPS = [
-  '👻 Out of tokens. David\'s broke.',
-  '👻 GPT-4 isn\'t free, you know.',
-  '👻 My lips are sealed. And rate-limited.',
-  '👻 Budget: $0.00. Questions: closed.',
-];
+const NPC_QUIP = '👻 Ask me anything about David';
+const NPC_EXHAUSTED_QUIP = '👻 Out of questions. David\'s broke.';
 
 
 export default function GameCanvas({
@@ -647,22 +638,22 @@ export default function GameCanvas({
 
     // Detect dialog open → close and fire post-dialog reaction bubble
     const ITEM_REACTIONS = {
-      'bottle':         '🤿 Alright David, let\'s see what else is down here.',
-      'echo-show':      '🤿 Alexa, turn off the lights',
-      'ring-doorbell':  '🤿 "Alexa, let me know when you see a shark."',
-      'blueprint':      '🤿 A digital floorplan. I could use one of those down here.',
-      'treasure-chest': '🤿 Someone had to make sure the deals actually worked. Apparently it was him.',
-      'amazon':         '🤿 Little Big Shoe Award. That\'s a real thing.',
-      'lio':           '🤿 This guy has been automating workflows for a while.',
-      'penn':          '🤿 Economics, not Wharton. But that explains the LTV models.',
+      'bottle':         '🤿 Let\'s see what else is down here.',
+      'echo-show':      '🤿 Alexa, turn off the lights.',
+      'ring-doorbell':  '🤿 "Alexa, is that a shark?"',
+      'blueprint':      '🤿 I need a floorplan down here.',
+      'treasure-chest': '🤿 Deals guy. Noted.',
+      'amazon':         '🤿 Little Big Shoe Award. Real thing.',
+      'lio':           '🤿 Automating since 2017.',
+      'penn':          '🤿 Econ, not Wharton. Got it.',
     };
     if (prevDialogOpenRef.current && !dialogOpen && lastOpenedItemIdRef.current) {
       const closedId = lastOpenedItemIdRef.current;
       let reaction = null;
       if (closedId === 'delhi') {
-        reaction = '🤿 Three legs and still the best boy.';
+        reaction = '🤿 Best boy. Three wheels.';
       } else if (closedId === 'camera') {
-        reaction = '🤿 I wonder if the 👻 Ghost Diver knows what award he won?';
+        reaction = '🤿 Ask the 👻 what award he won.';
       } else {
         const treasureData = content.treasures?.find(t => t.id === closedId);
         const iconType = treasureData?.iconType;
@@ -830,19 +821,9 @@ export default function GameCanvas({
       const npcDir = state.playerX > NPC_DIVER_X ? 1 : -1;
       drawNPCDiver(ctx, NPC_DIVER_X - 28 * p, NPC_DIVER_Y - 14 * p, npcDir, npcBob, p);
 
-      const npcQuipCycle = npcExhausted ? 4000 : 3200;
-      const npcQuipList  = npcExhausted ? NPC_EXHAUSTED_QUIPS : NPC_QUIPS;
-      const npcQuipIdx   = Math.floor(timestamp / npcQuipCycle) % npcQuipList.length;
-      const npcQuipPhase = (timestamp % npcQuipCycle) / npcQuipCycle;
-      const npcQuipAlpha = npcQuipPhase < 0.1 ? npcQuipPhase / 0.1
-                         : npcQuipPhase > 0.85 ? (1 - npcQuipPhase) / 0.15
-                         : 1;
-      const npcQuip = npcQuipList[npcQuipIdx];
+      const npcQuip = npcExhausted ? NPC_EXHAUSTED_QUIP : NPC_QUIP;
       const npcBubbleY = NPC_DIVER_Y - 14 * p - 20 * p + npcBob;
-      ctx.save();
-      ctx.globalAlpha = npcQuipAlpha * 0.9;
       drawLabelBubble(ctx, NPC_DIVER_X, npcBubbleY, npcQuip, p);
-      ctx.restore();
     }
 
     drawDiver(ctx, state.playerX - 28 * p, state.playerY - 14 * p, directionRef.current, isReady ? 0 : animFrameRef.current, p);

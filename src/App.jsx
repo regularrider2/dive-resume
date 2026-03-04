@@ -575,7 +575,6 @@ function AirWarning() {
       justifyContent: 'center',
       animation: 'airWarnFade 2.5s ease-out forwards',
     }}>
-      {/* Red radial tint */}
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -583,31 +582,31 @@ function AirWarning() {
         animation: 'airTintFade 2.5s ease-out forwards',
       }} />
 
-      {/* Main warning text */}
       <div style={{
         position: 'relative',
         fontFamily: 'monospace',
         fontWeight: 'bold',
-        fontSize: 'clamp(48px, 9vw, 88px)',
+        fontSize: 'clamp(28px, 7vw, 72px)',
         color: '#FFD700',
         letterSpacing: '0.08em',
+        textAlign: 'center',
         textShadow: '0 0 30px rgba(255,200,0,0.8), 0 0 60px rgba(255,160,0,0.4)',
         animation: 'airTextPop 2.5s ease-out forwards',
       }}>
         ⚠ LOW AIR
       </div>
 
-      {/* Subtitle */}
       <div style={{
         position: 'relative',
         fontFamily: 'monospace',
-        fontSize: 'clamp(13px, 2.2vw, 18px)',
+        fontSize: 'clamp(10px, 1.8vw, 16px)',
         color: 'rgba(255, 220, 80, 0.9)',
-        letterSpacing: '0.25em',
-        marginTop: 10,
+        letterSpacing: '0.15em',
+        textAlign: 'center',
+        marginTop: 6,
         animation: 'airTextPop 2.5s ease-out forwards',
       }}>
-        45 SECONDS REMAINING — GET TO THE SURFACE
+        GET TO THE SURFACE
       </div>
 
       <style>{`
@@ -642,7 +641,6 @@ function ClearFlash() {
       justifyContent: 'center',
       animation: 'clearFlash 2.2s ease-out forwards',
     }}>
-      {/* Full-screen green tint */}
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -650,28 +648,28 @@ function ClearFlash() {
         animation: 'clearTintFade 2.2s ease-out forwards',
       }} />
 
-      {/* Main CLEAR text */}
       <div style={{
         position: 'relative',
         fontFamily: 'monospace',
         fontWeight: 'bold',
-        fontSize: 'clamp(64px, 12vw, 120px)',
+        fontSize: 'clamp(36px, 9vw, 100px)',
         color: '#00e060',
         letterSpacing: '0.12em',
-        textShadow: '0 0 40px rgba(0,220,80,0.8), 0 0 80px rgba(0,220,80,0.4), 0 0 120px rgba(0,220,80,0.2)',
+        textAlign: 'center',
+        textShadow: '0 0 40px rgba(0,220,80,0.8), 0 0 80px rgba(0,220,80,0.4)',
         animation: 'clearTextPop 2.2s ease-out forwards',
       }}>
         CLEAR
       </div>
 
-      {/* Subtitle */}
       <div style={{
         position: 'relative',
         fontFamily: 'monospace',
-        fontSize: 'clamp(14px, 2.5vw, 20px)',
+        fontSize: 'clamp(10px, 2vw, 18px)',
         color: 'rgba(0, 230, 100, 0.85)',
-        letterSpacing: '0.3em',
-        marginTop: 8,
+        letterSpacing: '0.2em',
+        textAlign: 'center',
+        marginTop: 6,
         animation: 'clearTextPop 2.2s ease-out forwards',
       }}>
         SAFE TO ASCEND
