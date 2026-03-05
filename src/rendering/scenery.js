@@ -486,56 +486,51 @@ function drawBoat(ctx, worldX, worldY, p, time) {
   ctx.arc(cx + s * 0.07, cy - s * 1.22, s * 0.035, 0, Math.PI * 2);
   ctx.fill();
 
-  // Beanie cuff (folded brim at forehead)
-  ctx.fillStyle = '#a01818';
-  ctx.beginPath();
-  ctx.roundRect(cx - s * 0.22, cy - s * 1.42, s * 0.44, s * 0.12, s * 0.04);
-  ctx.fill();
-
-  // Beanie body (dome)
+  // Beanie body (shallow dome sitting on top of head)
   ctx.fillStyle = '#cc2222';
   ctx.beginPath();
-  ctx.ellipse(cx, cy - s * 1.52, s * 0.22, s * 0.26, 0, Math.PI, Math.PI * 2);
+  ctx.ellipse(cx, cy - s * 1.40, s * 0.24, s * 0.16, 0, Math.PI, Math.PI * 2);
   ctx.fill();
+
+  // Beanie cuff (folded band at forehead)
+  ctx.fillStyle = '#a01818';
   ctx.beginPath();
-  ctx.fillRect(cx - s * 0.22, cy - s * 1.52, s * 0.44, s * 0.1);
+  ctx.ellipse(cx, cy - s * 1.40, s * 0.24, s * 0.06, 0, 0, Math.PI);
   ctx.fill();
 
   // Beanie highlight
   ctx.fillStyle = '#dd4444';
   ctx.beginPath();
-  ctx.ellipse(cx - s * 0.06, cy - s * 1.64, s * 0.08, s * 0.06, -0.3, 0, Math.PI * 2);
+  ctx.ellipse(cx - s * 0.05, cy - s * 1.50, s * 0.09, s * 0.04, -0.2, 0, Math.PI * 2);
   ctx.fill();
 
   // Ribbed knit lines on cuff
-  ctx.strokeStyle = 'rgba(0,0,0,0.15)';
-  ctx.lineWidth = s * 0.015;
+  ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+  ctx.lineWidth = s * 0.012;
   for (let r = -2; r <= 2; r++) {
+    const rx = cx + r * s * 0.07;
+    const ry = cy - s * 1.40;
     ctx.beginPath();
-    ctx.moveTo(cx + r * s * 0.07, cy - s * 1.42);
-    ctx.lineTo(cx + r * s * 0.07, cy - s * 1.30);
+    ctx.moveTo(rx, ry - s * 0.04);
+    ctx.lineTo(rx, ry + s * 0.05);
     ctx.stroke();
   }
 
   // Pom-pom
   ctx.fillStyle = '#cc2222';
   ctx.beginPath();
-  ctx.arc(cx, cy - s * 1.78, s * 0.06, 0, Math.PI * 2);
+  ctx.arc(cx, cy - s * 1.56, s * 0.055, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = '#dd4444';
   ctx.beginPath();
-  ctx.arc(cx - s * 0.02, cy - s * 1.80, s * 0.025, 0, Math.PI * 2);
+  ctx.arc(cx - s * 0.015, cy - s * 1.575, s * 0.022, 0, Math.PI * 2);
   ctx.fill();
 
   // Beanie outline
-  ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-  ctx.lineWidth = s * 0.04;
+  ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+  ctx.lineWidth = s * 0.03;
   ctx.beginPath();
-  ctx.ellipse(cx, cy - s * 1.52, s * 0.22, s * 0.26, 0, Math.PI, Math.PI * 2);
-  ctx.moveTo(cx + s * 0.22, cy - s * 1.52);
-  ctx.lineTo(cx + s * 0.22, cy - s * 1.42);
-  ctx.moveTo(cx - s * 0.22, cy - s * 1.52);
-  ctx.lineTo(cx - s * 0.22, cy - s * 1.42);
+  ctx.ellipse(cx, cy - s * 1.40, s * 0.24, s * 0.16, 0, Math.PI, Math.PI * 2);
   ctx.stroke();
 
   // Megaphone
