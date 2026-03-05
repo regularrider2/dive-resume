@@ -218,7 +218,7 @@ export default function App() {
     notifyGameOver(reason);
     setState(prev => {
       if (prev.screen === 'gameOver') return prev;
-      return { ...prev, screen: 'gameOver', gameOverReason: reason };
+      return { ...prev, screen: 'gameOver', gameOverReason: reason, airTimer: 0, airTimerActive: false };
     });
   }, []);
 
@@ -362,6 +362,8 @@ export default function App() {
           return {
             ...prev,
             carryingLobster: prev.carryingLobster ? null : prev.carryingLobster,
+            airTimer: 0,
+            airTimerActive: false,
             decompressionActive: false,
             decompressionTriggered: false,
             decompressionWarning: false,
@@ -381,7 +383,7 @@ export default function App() {
     if (!state.airTimerActive) return;
     const interval = setInterval(() => {
       setState(prev => {
-        if (!prev.airTimerActive) return prev;
+        if (!prev.airTimerActive || prev.screen === 'gameOver') return prev;
         const next = prev.airTimer - 1;
         if (next <= 0) { notifyGameOver('outOfAir'); return { ...prev, airTimer: 0, airTimerActive: false, screen: 'gameOver', gameOverReason: 'outOfAir' }; }
         return { ...prev, airTimer: next };
@@ -724,8 +726,8 @@ const GAME_OVER_COPY = {
   },
   decompressionWithLobster: {
     icon: '🦞',
-    headline: 'DROPPED THE LOBSTER',
-    subheadline: '⚡ AND GOT THE BENDS',
+    headline: 'YOU GOT THE BENDS',
+    subheadline: '🦞 AND DROPPED THE LOBSTER',
     color: '#ff4444',
     glow: 'rgba(255,68,68,0.6)',
     bg: 'radial-gradient(ellipse at center, rgba(50,5,5,0.97) 0%, rgba(0,0,0,0.97) 100%)',
