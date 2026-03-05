@@ -3,19 +3,35 @@ import { createClient } from '@supabase/supabase-js';
 const url = import.meta.env.VITE_SUPABASE_URL;
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export function initTracker(sessionId, ref) {
-  if (!url || !anonKey || !url.startsWith('http')) return { client: null, sessionId, ref };
+const VISITOR_KEY = 'dive_visitor_id';
+
+function getOrCreateVisitorId() {
   try {
-    return { client: createClient(url, anonKey), sessionId, ref };
+    let id = localStorage.getItem(VISITOR_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(VISITOR_KEY, id);
+    }
+    return id;
   } catch {
-    return { client: null, sessionId, ref };
+    return null;
+  }
+}
+
+export function initTracker(sessionId, ref) {
+  if (!url || !anonKey || !url.startsWith('http')) return { client: null, sessionId, ref, visitorId: null };
+  try {
+    return { client: createClient(url, anonKey), sessionId, ref, visitorId: getOrCreateVisitorId() };
+  } catch {
+    return { client: null, sessionId, ref, visitorId: null };
   }
 }
 
 export function trackEvent(tracker, eventType, data = {}) {
-  if (!tracker?.client) return;
+  if (!tracker?.client || tracker.ref === 'self') return;
   const row = {
     session_id: tracker.sessionId,
+    visitor_id: tracker.visitorId,
     ref: tracker.ref,
     event_type: eventType,
     data: { ...data },

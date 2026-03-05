@@ -20,7 +20,6 @@ import NPCChatOverlay from './screens/NPCChatOverlay.jsx';
 import Dialog from './ui/Dialog.jsx';
 import PhotoCarousel from './ui/PhotoCarousel.jsx';
 import VirtualJoystick from './ui/VirtualJoystick.jsx';
-import InteractButton from './ui/InteractButton.jsx';
 import ConnectButton from './ui/ConnectButton.jsx';
 import { Analytics } from '@vercel/analytics/react';
 import { touchState } from './engine/touchInput.js';
@@ -451,10 +450,6 @@ export default function App() {
     if (linkType === 'resume_view' || linkType === 'resume') notifyResumeViewed();
   }, []);
 
-  const handleTouchInteract = useCallback(() => {
-    touchState.interactPressed = true;
-  }, []);
-
   const isTouch = typeof window !== 'undefined' && isTouchDevice();
   const joystickHalf = (theme.joystick?.size ?? 120) / 2;
 
@@ -492,10 +487,6 @@ export default function App() {
                 active={touchState.active}
                 thumbX={touchState.dx * joystickHalf}
                 thumbY={touchState.dy * joystickHalf}
-              />
-              <InteractButton
-                visible={!!state.nearbyItem && !state.showDialog && !state.showCarousel}
-                onInteract={handleTouchInteract}
               />
             </>
           )}

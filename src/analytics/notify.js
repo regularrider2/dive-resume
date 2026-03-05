@@ -126,8 +126,12 @@ function buildMessage(trigger) {
   return lines.join('\n');
 }
 
+function isSelf() {
+  try { return new URLSearchParams(window.location.search).get('ref') === 'self'; } catch { return false; }
+}
+
 function sendNotification(trigger) {
-  if (!WEBHOOK_URL || session.notified) return;
+  if (!WEBHOOK_URL || session.notified || isSelf()) return;
   session.notified = true;
 
   const message = buildMessage(trigger);

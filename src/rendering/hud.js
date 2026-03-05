@@ -61,7 +61,7 @@ export function drawHUD(ctx, viewportWidth, viewportHeight, state, pixelSize, is
   let displayZoneLabel = zoneLabel;
   let zoneLabelW = ctx.measureText(zoneLabel).width;
 
-  const flavor = anno?.flavor ?? zone?.flavor ?? null;
+  const flavor = isMobile ? null : (anno?.flavor ?? zone?.flavor ?? null);
   let displayFlavor = flavor ?? null;
   let flavorW = 0;
   if (flavor) {

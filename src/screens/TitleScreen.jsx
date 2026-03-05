@@ -231,55 +231,6 @@ export default function TitleOverlay({ onStart, onCtaClick }) {
       drawDiver(dctx, diverX - 56, diverY - 28, diverDir, diverFrame, 2);
       dctx.restore();
 
-      // Single speech bubble above diver
-      const quip = '🤿 I hear this David guy is super interesting.';
-      const qFontSize = 12;
-      dctx.font = `bold ${qFontSize}px monospace`;
-      const qTw = dctx.measureText(quip).width;
-      const qPadX = 10, qPadY = 7;
-      const qW = qTw + qPadX * 2;
-      const qH = qFontSize + qPadY * 2;
-      const qX = diverX - qW / 2;
-      const qY = diverY - 48 - qH;
-      dctx.save();
-      dctx.globalAlpha = 0.92;
-      dctx.fillStyle = 'rgba(255,255,255,0.95)';
-      dctx.beginPath();
-      if (typeof dctx.roundRect === 'function') {
-        dctx.roundRect(qX, qY, qW, qH, 7);
-      } else {
-        dctx.rect(qX, qY, qW, qH);
-      }
-      dctx.fill();
-      dctx.strokeStyle = '#1a4080';
-      dctx.lineWidth = 1.5;
-      dctx.beginPath();
-      if (typeof dctx.roundRect === 'function') {
-        dctx.roundRect(qX, qY, qW, qH, 7);
-      } else {
-        dctx.rect(qX, qY, qW, qH);
-      }
-      dctx.stroke();
-      dctx.fillStyle = 'rgba(255,255,255,0.95)';
-      dctx.beginPath();
-      dctx.moveTo(diverX - 6, qY + qH);
-      dctx.lineTo(diverX + 6, qY + qH);
-      dctx.lineTo(diverX + 2, qY + qH + 10);
-      dctx.closePath();
-      dctx.fill();
-      dctx.strokeStyle = '#1a4080';
-      dctx.lineWidth = 1.5;
-      dctx.beginPath();
-      dctx.moveTo(diverX - 6, qY + qH);
-      dctx.lineTo(diverX + 2, qY + qH + 10);
-      dctx.lineTo(diverX + 6, qY + qH);
-      dctx.stroke();
-      dctx.fillStyle = '#1a3060';
-      dctx.font = `bold ${qFontSize}px monospace`;
-      dctx.textAlign = 'center';
-      dctx.textBaseline = 'middle';
-      dctx.fillText(quip, diverX, qY + qH / 2);
-      dctx.restore();
 
       rafRef.current = requestAnimationFrame(loop);
     };

@@ -25,7 +25,7 @@ export default function VirtualJoystick({ active, thumbX = 0, thumbY = 0, size: 
   const ty = Math.max(-half, Math.min(half, thumbY));
 
   return (
-    <div style={{ position: 'fixed', bottom: offset, left: offset, width: s, height: s, pointerEvents: 'none', zIndex: 100 }}>
+    <div style={{ position: 'fixed', bottom: offset, right: offset, width: s, height: s, pointerEvents: 'none', zIndex: 100 }}>
       <div style={{
         position: 'absolute', left: 0, top: 0, width: s, height: s,
         borderRadius: '50%',

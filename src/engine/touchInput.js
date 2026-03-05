@@ -31,7 +31,7 @@ function handleTouchStart(e) {
   const canvasHeight = rect.height;
   const relX = (x - rect.left) / canvasWidth;
   const relY = (y - rect.top) / canvasHeight;
-  if (relX < 0.5 && relY > 0.5) {
+  if (relX > 0.5 && relY > 0.5) {
     centerX = x;
     centerY = y;
     touchState.active = true;

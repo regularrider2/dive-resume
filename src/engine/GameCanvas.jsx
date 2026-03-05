@@ -178,7 +178,7 @@ function drawBreathBubbles(ctx, playerX, playerScreenY, direction, p, timestamp)
 }
 
 function drawSharkBubble(ctx, x, y, p) {
-  const text = '🦈 Oh look, a shark!';
+  const text = '🤿 Look, a 🦈 shark!';
   const fontSize = Math.max(13, p * 6);
   const padX = 12;
   const padY = 8;
@@ -627,7 +627,8 @@ export default function GameCanvas({
     }
     // Trigger trench-entry player bubble ("Look, a lobster!") — once per entry
     if (state.currentZone !== 'trench') trenchBubbleShownRef.current = false;
-    if (state.currentZone === 'trench' && state.previousZone && state.previousZone !== 'trench' && !trenchBubbleShownRef.current) {
+    const hasDeliveredLobster = state.lobstersCollected && state.lobstersCollected.size > 0;
+    if (state.currentZone === 'trench' && state.previousZone && state.previousZone !== 'trench' && !trenchBubbleShownRef.current && !hasDeliveredLobster) {
       trenchBubbleRef.current = { timer: 3500, total: 3500 };
       trenchBubbleShownRef.current = true;
     }
@@ -735,7 +736,7 @@ export default function GameCanvas({
       const bubbleWorldX = boatWorldX + s * 1.5 + s * 0.9;
       const bubbleWorldY = surfaceStart - s * 0.5 - s * 1.85;
       if (bubbleWorldY >= visibleTop && bubbleWorldY <= visibleBottom) {
-        const moveHint = (typeof window !== 'undefined' && isTouchDevice()) ? 'Use the joystick (bottom left) to move' : 'Use arrow keys to move';
+        const moveHint = (typeof window !== 'undefined' && isTouchDevice()) ? 'Use the joystick (bottom right) to move' : 'Use arrow keys to move';
         ctx.save();
         ctx.globalAlpha = alpha;
         drawBoatBubble(ctx, bubbleWorldX, bubbleWorldY, p, moveHint);
@@ -890,7 +891,7 @@ export default function GameCanvas({
         const fadeOut = Math.min(1, timer / 500);
         ctx.save();
         ctx.globalAlpha = Math.min(fadeIn, fadeOut);
-        drawLabelBubble(ctx, state.playerX, bubbleY, '🤿 Look, a lobster!', p);
+        drawLabelBubble(ctx, state.playerX, bubbleY, '🤿 Look, a 🦞 lobster!', p);
         ctx.restore();
       // Priority 3: context-aware idle nudge
       } else if (!dialogOpen) {
@@ -938,8 +939,8 @@ export default function GameCanvas({
         } else {
           // Normal exploration idle nudges (touch: joystick hint; desktop: arrow keys)
           const isTouchDev = typeof window !== 'undefined' && isTouchDevice();
-          const moveNudge = isTouchDev ? '🤿 Use the joystick (bottom left) to move around!' : '🤿 Use arrow keys to move around!';
-          const moveSub = isTouchDev ? 'Use the joystick (bottom left) to move' : 'Use arrow keys to move';
+          const moveNudge = isTouchDev ? '🤿 Use the joystick (bottom right) to move around!' : '🤿 Use arrow keys to move around!';
+          const moveSub = isTouchDev ? 'Use the joystick (bottom right) to move' : 'Use arrow keys to move';
           const IDLE_NUDGES = [
             '🤿 Anything else down here?',
             '🤿 Might wanna swim around...',

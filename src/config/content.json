@@ -13,7 +13,7 @@
       { "icon": "🏆", "text": "Discover everything to complete the dive" }
     ],
     "instructionsMobile": [
-      { "icon": "🎮", "text": "Use the joystick (bottom left) to swim" },
+      { "icon": "🎮", "text": "Use the joystick (bottom right) to swim" },
       { "icon": "✨", "text": "Swim over glowing items to discover them — no button needed" },
       { "icon": "🦞", "text": "Find the lobster deep in The Trench and bring it back to the boat for dinner" },
       { "icon": "⚠️", "text": "Watch your depth — ascend too fast and it's game over" },

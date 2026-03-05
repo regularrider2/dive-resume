@@ -486,35 +486,56 @@ function drawBoat(ctx, worldX, worldY, p, time) {
   ctx.arc(cx + s * 0.07, cy - s * 1.22, s * 0.035, 0, Math.PI * 2);
   ctx.fill();
 
-  // Hat brim
-  ctx.fillStyle = '#111828';
+  // Beanie cuff (folded brim at forehead)
+  ctx.fillStyle = '#a01818';
   ctx.beginPath();
-  ctx.ellipse(cx, cy - s * 1.4, s * 0.28, s * 0.07, 0, 0, Math.PI * 2);
+  ctx.roundRect(cx - s * 0.22, cy - s * 1.42, s * 0.44, s * 0.12, s * 0.04);
   ctx.fill();
 
-  // Hat body
-  ctx.fillStyle = '#f2f2f2';
-  ctx.beginPath();
-  ctx.roundRect(cx - s * 0.18, cy - s * 1.76, s * 0.36, s * 0.36, s * 0.06);
-  ctx.fill();
-
-  // Hat highlight
-  ctx.fillStyle = '#ffffff';
-  ctx.beginPath();
-  ctx.ellipse(cx - s * 0.06, cy - s * 1.68, s * 0.07, s * 0.04, -0.3, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Hat band
+  // Beanie body (dome)
   ctx.fillStyle = '#cc2222';
   ctx.beginPath();
-  ctx.roundRect(cx - s * 0.18, cy - s * 1.41, s * 0.36, s * 0.07, s * 0.02);
+  ctx.ellipse(cx, cy - s * 1.52, s * 0.22, s * 0.26, 0, Math.PI, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.fillRect(cx - s * 0.22, cy - s * 1.52, s * 0.44, s * 0.1);
   ctx.fill();
 
-  // Hat outline
-  ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+  // Beanie highlight
+  ctx.fillStyle = '#dd4444';
+  ctx.beginPath();
+  ctx.ellipse(cx - s * 0.06, cy - s * 1.64, s * 0.08, s * 0.06, -0.3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Ribbed knit lines on cuff
+  ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+  ctx.lineWidth = s * 0.015;
+  for (let r = -2; r <= 2; r++) {
+    ctx.beginPath();
+    ctx.moveTo(cx + r * s * 0.07, cy - s * 1.42);
+    ctx.lineTo(cx + r * s * 0.07, cy - s * 1.30);
+    ctx.stroke();
+  }
+
+  // Pom-pom
+  ctx.fillStyle = '#cc2222';
+  ctx.beginPath();
+  ctx.arc(cx, cy - s * 1.78, s * 0.06, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#dd4444';
+  ctx.beginPath();
+  ctx.arc(cx - s * 0.02, cy - s * 1.80, s * 0.025, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Beanie outline
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)';
   ctx.lineWidth = s * 0.04;
   ctx.beginPath();
-  ctx.roundRect(cx - s * 0.18, cy - s * 1.76, s * 0.36, s * 0.36, s * 0.06);
+  ctx.ellipse(cx, cy - s * 1.52, s * 0.22, s * 0.26, 0, Math.PI, Math.PI * 2);
+  ctx.moveTo(cx + s * 0.22, cy - s * 1.52);
+  ctx.lineTo(cx + s * 0.22, cy - s * 1.42);
+  ctx.moveTo(cx - s * 0.22, cy - s * 1.52);
+  ctx.lineTo(cx - s * 0.22, cy - s * 1.42);
   ctx.stroke();
 
   // Megaphone

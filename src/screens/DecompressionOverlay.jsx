@@ -10,13 +10,14 @@ export default function DecompressionOverlay({ timer, warning, warningTimer }) {
   return (
     <div style={{
       position: 'fixed',
-      top: 0, left: 0, right: 0,
+      top: 0, left: 0, right: 0, bottom: 0,
       zIndex: 1500,
       pointerEvents: 'none',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      paddingTop: 60,
+      justifyContent: 'center',
+      paddingBottom: '15%',
     }}>
       {/* Decompression timer bar */}
       <div style={{
