@@ -864,8 +864,10 @@ export default function GameCanvas({
       // Clamp so bubble never goes above top of screen with a small margin
       const bubbleY = Math.max(BUBBLE_HEIGHT_APPROX + 8, baseY);
 
-      // Priority 1: shark bubble (highest urgency — suppresses everything else)
-      if (sharkBubbleRef.current > 0) {
+      // Skip player speech bubbles while carrying lobster — let the lobster do the talking
+      if (state.carryingLobster) {
+        // no-op: lobster zone lines are drawn above
+      } else if (sharkBubbleRef.current > 0) {
         const fadeIn  = Math.min(1, (3000 - sharkBubbleRef.current) / 200);
         const fadeOut = Math.min(1, sharkBubbleRef.current / 400);
         ctx.save();
