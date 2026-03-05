@@ -725,7 +725,7 @@ const GAME_OVER_COPY = {
     showSinkingLobster: false,
   },
   decompressionWithLobster: {
-    icon: '🦞',
+    icon: '🫧',
     headline: 'YOU GOT THE BENDS',
     subheadline: '🦞 AND DROPPED THE LOBSTER',
     color: '#ff4444',
