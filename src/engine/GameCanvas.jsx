@@ -690,7 +690,7 @@ export default function GameCanvas({
 
     // Trigger "Oh look, a shark!" when player first transitions into the Deep
     const currentZone = getCurrentZone(state.playerY, theme.zones);
-    const inDeep = currentZone?.id === 'deep';
+    const inDeep = currentZone === 'deep';
     if (inDeep && !wasInDeepRef.current) {
       sharkBubbleRef.current = 3000; // show for 3 seconds
     }
