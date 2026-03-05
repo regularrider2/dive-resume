@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { consumeInteract } from '../engine/input.js';
 import theme from '../config/theme.json';
 
 const { colors } = theme;
@@ -83,7 +84,7 @@ const baseStyles = {
 export default function Dialog({ type, data, onClose, onViewGallery }) {
   useEffect(() => {
     const handleKey = (e) => {
-      if (e.key === 'Escape' || e.key === 'Enter') onClose();
+      if (e.key === 'Escape' || e.key === 'Enter') { consumeInteract(); onClose(); }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
