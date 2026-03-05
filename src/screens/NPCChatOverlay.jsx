@@ -3,6 +3,7 @@ import { askNPCDiver } from '../engine/npcChat.js';
 
 const SUGGESTED_QUESTIONS = [
   "What did David build at Amazon?",
+  "How did David build this game?",
   "What photography award did David win?",
 ];
 

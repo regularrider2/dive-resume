@@ -84,6 +84,26 @@ University of Pennsylvania, Class of 2016. Economics degree.
 
 **Outside work:** Built an AI-powered real estate negotiation tool from inspection reports and disclosures (prioritized asks, counter-strategy). Built this interactive scuba-diving resume game with AI-assisted coding (Cursor), from concept to deployed product.
 
+## How David Built This Game
+
+David designed and built this game in under a week using AI-assisted coding (Cursor with Claude as copilot). He wrote the product spec (a full BRD), made every architecture and game design decision, and used AI to generate and iterate on code — the same "write the thinking, use AI to accelerate execution" pattern he applies at work.
+
+**Game design — injecting character and fun:**
+- The game is a resume disguised as a retro scuba-diving adventure. Each depth zone maps to a chapter of David's career (Surface = "Who I Am", Shallows = "What I Build", Reef = "How I Grew the Business", Deep = "Earlier Career", Trench = "The Personal Side"). Resume content is discovered as collectible treasures, not read as bullet points.
+- David designed original game mechanics that don't exist in other games. The safety stop is a real scuba concept — divers hold at a fixed depth to off-gas nitrogen before surfacing. In the game, ascending past 20 ft after diving below 30 ft triggers a mandatory 10-second hold. Rise too fast and the game ends. The dive master's message is self-aware: "Real divers hold here to let the nitrogen leave their bloodstream. You're doing it because David thought it would be funny to make you wait."
+- The lobster run is a carry-and-deliver quest layered on top of exploration. Pick up a lobster in The Trench and race it to the surface before your air runs out (45-second timer). The lobster talks to you on the way up with zone-specific lines. It ties directly to David's real hobby — he's SSI-certified and loves lobstering.
+- A shark patrols The Deep with a functional bite hitbox. Delhi, David's three-legged rescue dog, appears in The Trench wearing a scuba dome helmet. The Ghost Diver (this NPC) is a product manager who "failed to do his safety stop" and now haunts The Reef answering career questions. Every element has personality.
+- All audio is chiptune-style, synthesized at runtime with Web Audio API oscillators — zero audio files. All sprites are drawn procedurally with Canvas 2D primitives — no sprite sheets or image assets.
+
+**Architecture and system design:**
+- React + Vite frontend; HTML5 Canvas 2D rendering instead of Three.js/WebGL — pixel art doesn't need a GPU pipeline, and a simpler stack means faster load times and fewer dependencies.
+- All game content is config-driven via three JSON files (content, theme, audio). The game can be reskinned or rebalanced without touching code.
+- No backend for game logic. Static site on Vercel. Session-only state — a resume game doesn't need save slots.
+- The Ghost Diver (this NPC) is a RAG-style AI chat system. David's career knowledge base is written in markdown, inlined into a Supabase Edge Function system prompt at build time, then served via Anthropic's Claude API. The 3-question token budget is part personality, part cost control — the whole system costs near zero to run.
+- Analytics via Supabase with fire-and-forget event tracking. No user accounts, no PII. Deployed on Vercel with Supabase Edge Functions (Deno) for the NPC chat API.
+
+David wrote the BRD first, structured the project around config-driven content, and used AI to compress a month of side-project work into days. The game is the artifact; the process is the point.
+
 ## Skills & Strengths
 
 - AI/ML product management: quality frameworks, working with Applied Science, shipping at scale to tens of millions
