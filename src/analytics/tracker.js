@@ -18,25 +18,58 @@ function getOrCreateVisitorId() {
   }
 }
 
+const isDev = typeof import.meta !== 'undefined' && import.meta.env?.DEV;
+
 export function initTracker(sessionId, ref) {
-  if (!url || !anonKey || !url.startsWith('http')) return { client: null, sessionId, ref, visitorId: null };
+  if (!url || !anonKey || !url.startsWith('http')) {
+    if (isDev) {
+      console.warn('[Analytics] Disabled: missing or invalid VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY');
+    }
+    return { client: null, sessionId, ref, visitorId: null };
+  }
   try {
-    return { client: createClient(url, anonKey), sessionId, ref, visitorId: getOrCreateVisitorId() };
-  } catch {
+    const tracker = { client: createClient(url, anonKey), sessionId, ref, visitorId: getOrCreateVisitorId() };
+    if (isDev && ref === 'self') {
+      console.warn('[Analytics] Events skipped for this session (ref=self). Use a URL without ?ref=self to record metrics.');
+    }
+    return tracker;
+  } catch (e) {
+    if (isDev) console.warn('[Analytics] Supabase client failed:', e);
     return { client: null, sessionId, ref, visitorId: null };
   }
 }
 
 export function trackEvent(tracker, eventType, data = {}) {
-  if (!tracker?.client || tracker.ref === 'self') return;
+  if (!tracker?.client || tracker.ref === 'self') {
+    if (!import.meta.env.DEV && eventType === 'session_start' && !tracker?.client) {
+      console.warn('[Analytics] Disabled — VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY not set in this build');
+    }
+    return;
+  }
   const row = {
     session_id: tracker.sessionId,
-    visitor_id: tracker.visitorId,
     ref: tracker.ref,
     event_type: eventType,
     data: { ...data },
   };
-  tracker.client.from('events').insert(row).then(() => {}).catch(() => {});
+  tracker.client
+    .from('events')
+    .insert(row)
+    .then(() => {
+      if (isDev && eventType === 'session_start') {
+        console.info('[Analytics] session_start sent to Supabase');
+      }
+    })
+    .catch((err) => {
+      const msg = err?.message ?? String(err);
+      const details = err?.details ?? err?.hint ?? '';
+      if (isDev) {
+        console.warn('[Analytics] Insert failed:', eventType, msg, details || err);
+      }
+      if (!isDev && eventType === 'session_start') {
+        console.warn('[Analytics] session_start failed:', msg, details || '');
+      }
+    });
 }
 
 export function trackSessionStart(tracker, metadata = {}) {
