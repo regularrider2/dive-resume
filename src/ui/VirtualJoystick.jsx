@@ -6,7 +6,7 @@ const joystickConfig = theme.joystick || { size: 120, offset: 30 };
 const defaultSize = joystickConfig.size ?? 120;
 const offset = joystickConfig.offset ?? 30;
 
-const HIGHLIGHT_GLOW = 'rgba(56,189,248,0.6)';
+const HIGHLIGHT_GLOW = 'rgba(56,189,248,0.7)';
 
 export default function VirtualJoystick({ active, thumbX = 0, thumbY = 0, size: propSize, highlight = false }) {
   const s = propSize ?? defaultSize;
@@ -15,8 +15,11 @@ export default function VirtualJoystick({ active, thumbX = 0, thumbY = 0, size: 
   const tx = Math.max(-half, Math.min(half, thumbX));
   const ty = Math.max(-half, Math.min(half, thumbY));
 
-  const ringBg = highlight ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.12)';
-  const arrowColor = highlight ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.35)';
+  // Before first touch: high-contrast bright cyan/white; after: subtle (fades via transition)
+  const ringBg = highlight ? 'rgba(56,189,248,0.55)' : 'rgba(255,255,255,0.12)';
+  const ringBorder = highlight ? '#bae6fd' : colors.ui.border;
+  const arrowColor = highlight ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.35)';
+  const thumbIdleBg = highlight ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)';
   const ringClass = highlight ? 'joystick-ring joystick-ring--highlight' : 'joystick-ring';
 
   return (
@@ -70,31 +73,29 @@ export default function VirtualJoystick({ active, thumbX = 0, thumbY = 0, size: 
           position: 'absolute', left: 0, top: 0, width: s, height: s,
           borderRadius: '50%',
           background: ringBg,
-          border: `2px solid ${highlight ? '#38bdf8' : colors.ui.border}`,
+          border: `2px solid ${ringBorder}`,
           boxShadow: highlight ? undefined : 'inset 0 0 12px rgba(255,255,255,0.06)',
         }}
       />
 
-      {/* Directional arrows */}
-      <span style={{ position: 'absolute', color: arrowColor, fontSize: 16, fontFamily: 'monospace', fontWeight: 'bold', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', top: 6, left: half - 5 }}>▲</span>
-      <span style={{ position: 'absolute', color: arrowColor, fontSize: 16, fontFamily: 'monospace', fontWeight: 'bold', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', bottom: 6, left: half - 5 }}>▼</span>
-      <span style={{ position: 'absolute', color: arrowColor, fontSize: 16, fontFamily: 'monospace', fontWeight: 'bold', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', left: 6, top: half - 8 }}>◀</span>
-      <span style={{ position: 'absolute', color: arrowColor, fontSize: 16, fontFamily: 'monospace', fontWeight: 'bold', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', right: 6, top: half - 8 }}>▶</span>
+      {/* Directional arrows — transition fades to subtle when highlight turns off */}
+      <span style={{ position: 'absolute', color: arrowColor, fontSize: 16, fontFamily: 'monospace', fontWeight: 'bold', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', top: 6, left: half - 5, transition: 'color 0.5s ease' }}>▲</span>
+      <span style={{ position: 'absolute', color: arrowColor, fontSize: 16, fontFamily: 'monospace', fontWeight: 'bold', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', bottom: 6, left: half - 5, transition: 'color 0.5s ease' }}>▼</span>
+      <span style={{ position: 'absolute', color: arrowColor, fontSize: 16, fontFamily: 'monospace', fontWeight: 'bold', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', left: 6, top: half - 8, transition: 'color 0.5s ease' }}>◀</span>
+      <span style={{ position: 'absolute', color: arrowColor, fontSize: 16, fontFamily: 'monospace', fontWeight: 'bold', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', right: 6, top: half - 8, transition: 'color 0.5s ease' }}>▶</span>
 
       <div
         style={{
           position: 'absolute',
           borderRadius: '50%',
-          background: active
-            ? 'rgba(255,255,255,0.85)'
-            : 'rgba(255,255,255,0.5)',
+          background: active ? 'rgba(255,255,255,0.85)' : thumbIdleBg,
           boxShadow: active ? '0 0 8px rgba(255,255,255,0.4)' : 'none',
           width: thumbRadius * 2,
           height: thumbRadius * 2,
           left: half - thumbRadius,
           top: half - thumbRadius,
           transform: `translate(${tx}px, ${ty}px)`,
-          transition: active ? 'none' : 'transform 0.15s ease-out',
+          transition: active ? 'none' : 'transform 0.15s ease-out, background 0.5s ease',
         }}
       />
     </div>
