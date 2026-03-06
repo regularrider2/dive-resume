@@ -35,6 +35,7 @@ export default function App() {
   const [npcChatted, setNpcChatted] = useState(false);
   const [npcQuestionsUsed, setNpcQuestionsUsed] = useState(0);
   const [npcChatMessages, setNpcChatMessages] = useState([]); // persists for session until reload
+  const [joystickUsed, setJoystickUsed] = useState(false);
   const NPC_QUESTION_LIMIT = 3;
   const audioRef = useRef(null);
   const trackerRef = useRef(null);
@@ -51,6 +52,16 @@ export default function App() {
       window.removeEventListener('beforeunload', onExit);
     };
   }, []);
+
+  // Dismiss joystick highlight once the player has touched the joystick (mobile)
+  useEffect(() => {
+    if (state.screen !== 'playing' || !(typeof window !== 'undefined' && isTouchDevice())) return;
+    if (joystickUsed) return;
+    const id = setInterval(() => {
+      if (touchState.active) setJoystickUsed(true);
+    }, 100);
+    return () => clearInterval(id);
+  }, [state.screen, joystickUsed]);
 
   const handlePlayEffect = useCallback((name) => {
     if (audioRef.current) playEffect(audioRef.current, name);
@@ -487,6 +498,7 @@ export default function App() {
                 active={touchState.active}
                 thumbX={touchState.dx * joystickHalf}
                 thumbY={touchState.dy * joystickHalf}
+                highlight={!joystickUsed}
               />
             </>
           )}
